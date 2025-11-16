@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import OneHotEncoder
 
-class Model3Preprocessor(BaseEstimator, TransformerMixin):
+class Model6Preprocessor(BaseEstimator, TransformerMixin):
     def __init__(self, add_bias=True):
         self.add_bias = add_bias
 

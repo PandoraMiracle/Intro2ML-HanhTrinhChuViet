@@ -4,8 +4,8 @@ import joblib
 
 import streamlit as st
 import matplotlib.pyplot as plt
-from Model_3Preprocessor import Model3Preprocessor
-from Model_3 import OLSLinearRegression
+from Model_6Preprocessor import Model6Preprocessor
+from Model_6 import OLSLinearRegression
 
 from visualize import (
     eda_correlation_significance,
