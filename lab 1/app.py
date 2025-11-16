@@ -4,6 +4,8 @@ import joblib
 
 import streamlit as st
 import matplotlib.pyplot as plt
+from Model_3Preprocessor import Model3Preprocessor
+from Model_3 import OLSLinearRegression
 
 from visualize import (
     eda_correlation_significance,
@@ -126,7 +128,10 @@ def main():
             })
 
             # Gọi model.predict
-            y_pred = model.predict(input_df)
+            if best_model_name == "OLS with Interaction Features":
+                y_pred = model.predict(input_df[["quan","dien_tich_dat_m2"]])
+            else:
+                y_pred = model.predict(input_df)
 
             # Nếu model train trên log(gia) thì phải convert ngược lại
             if USE_LOG_TARGET:
