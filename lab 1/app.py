@@ -25,7 +25,7 @@ def load_model():
 
 @st.cache_data
 def load_performance():
-    per_df = pd.read_csv("./Performance_Model/model_performance_report_1_2.csv")
+    per_df = pd.read_csv("./Performance_Model/model_performance_report.csv")
     per_df = per_df.sort_values(by="Test R2", ascending=True).reset_index(drop=True)
     return per_df
 
