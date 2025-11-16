@@ -17,9 +17,7 @@ from visualize import (
 USE_LOG_TARGET = False
 
 
-# =========================
-# 1. Load mô hình & dữ liệu (cache)
-# =========================
+# Load model
 @st.cache_resource
 def load_model():
     return joblib.load("./Full_Pipeline_Models/house_price_best_model.joblib")
@@ -44,9 +42,8 @@ def load_train_data():
     X_train = train.iloc[:, :-1]
     y_train = train.iloc[:, -1]
 
-    # TODO: nếu target của bạn tên là 'gia' hay 'Performance Index',
-    #       chỉnh lại tên cho đúng ở đây:
-    y_train = y_train.rename("Performance Index")  # hoặc .rename("gia")
+    # TODO: nếu target của bạn tên là 'gia'
+    y_train = y_train.rename("gia") 
 
     df_train = pd.concat([X_train, y_train], axis=1)
     return df_train, X_train.columns.tolist()
@@ -67,7 +64,7 @@ def main():
     best_model_name = per.iloc[-1]["Model"]
 
     # --- Tabs ---
-    tab_predict, tab_eda = st.tabs(["Dự đoán giá", "EDA - Performance Index"])
+    tab_predict, tab_eda = st.tabs(["Dự đoán giá", "EDA - Giá nhà"])
 
     # =====================================================
     # TAB 1: Dự đoán giá nhà
@@ -153,11 +150,11 @@ def main():
         st.dataframe(per)
 
     # =====================================================
-    # TAB 2: EDA – Performance Index
+    # TAB 2: EDA – Khám phá dữ liệu giá nhà
     # =====================================================
     with tab_eda:
         # --- Scatter Plot ---
-        st.subheader("Scatter plot: Feature vs Performance Index")
+        st.subheader("Scatter plot: Feature vs Price House")
 
         feature = st.selectbox(
             "Chọn 1 feature để vẽ scatter",
@@ -166,7 +163,7 @@ def main():
 
         if feature:
             fig = eda_scatter_feature_vs_target(
-                df_train, feature=feature, target="Performance Index"
+                df_train, feature=feature, target="gia"
             )
             st.pyplot(fig)
 
