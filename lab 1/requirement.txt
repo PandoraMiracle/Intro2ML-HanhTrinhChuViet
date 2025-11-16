@@ -3,4 +3,6 @@ seaborn
 matplotlib
 scikit-learn
 numpy
+bs4
+beautifulsoup4
 streamlit

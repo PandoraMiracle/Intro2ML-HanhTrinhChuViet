@@ -11,7 +11,7 @@ model = joblib.load("Models/house_price_Linear_poly_model.joblib")
 
 # Nếu bạn TRAIN trên log_gia (np.log1p(gia)) thì đặt True
 # Nếu bạn TRAIN trực tiếp trên 'gia' thì đặt False
-USE_LOG_TARGET = False   # <-- chỉnh cái này cho đúng với code train của bạn
+USE_LOG_TARGET = False
 
 # =========================
 # 2. Giao diện web
@@ -88,4 +88,4 @@ if st.button("Dự đoán giá"):
         gia_pred = y_pred[0]
 
     st.subheader("Kết quả dự đoán:")
-    st.write(f"Giá nhà dự đoán: **{gia_pred:,.2f}** (cùng đơn vị với cột 'gia' ban đầu)")
+    st.write(f"Giá nhà dự đoán: **{gia_pred:,.2f}** (tỷ Việt Nam đồng)")
