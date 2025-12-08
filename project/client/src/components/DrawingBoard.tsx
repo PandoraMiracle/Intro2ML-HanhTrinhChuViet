@@ -11,7 +11,7 @@ type Props = {
 const DrawingBoard = ({
     onSave,
     onUploaded,
-    uploadUrl = '/api/upload-base64',
+    uploadUrl = '/api/upload',
     strokeColor = '#1f3c32',
     strokeWidth = 3,
 }: Props) => {
@@ -120,18 +120,32 @@ const DrawingBoard = ({
         try {
             setIsUploading(true)
             setUploadMsg(null)
-            const resp = await fetch(uploadUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ image: imageData }),
-            })
-            if (!resp.ok) throw new Error('Upload không thành công')
-            const data = (await resp.json()) as { url?: string; message?: string }
-            if (data.url && onUploaded) onUploaded(data.url)
-            setUploadMsg(data.message || 'Đã upload thành công')
+            
+            // Convert canvas to blob
+            canvas.toBlob(async (blob: Blob | null) => {
+                if (!blob) {
+                    setUploadMsg('Không thể tạo blob từ canvas')
+                    setIsUploading(false)
+                    return
+                }
+
+                // Create FormData and append blob as file
+                const formData = new FormData()
+                formData.append('image', blob, 'drawing.png')
+
+                const resp = await fetch(uploadUrl, {
+                    method: 'POST',
+                    body: formData,
+                })
+                
+                if (!resp.ok) throw new Error('Upload không thành công')
+                const data = (await resp.json()) as { url?: string; message?: string; success?: boolean }
+                if (data.url && onUploaded) onUploaded(data.url)
+                setUploadMsg(data.message || 'Đã upload thành công')
+                setIsUploading(false)
+            }, 'image/png')
         } catch (err) {
             setUploadMsg((err as Error).message || 'Lỗi upload')
-        } finally {
             setIsUploading(false)
         }
     }
