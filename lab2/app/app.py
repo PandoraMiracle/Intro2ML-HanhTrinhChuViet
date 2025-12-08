@@ -4,6 +4,7 @@ import streamlit as st
 import sys
 from pathlib import Path
 import struct
+from PIL import Image
 from array import array
 import gzip
 
@@ -178,7 +179,6 @@ st.write("Or upload a **single image** (.png/.jpg) to predict one sample.")
 single_img = st.file_uploader("Upload one digit image", type=["png", "jpg", "jpeg"], key="single")
 
 if single_img is not None:
-    from PIL import Image
 
     img = Image.open(single_img).convert("L").resize((28, 28))
     img_arr = np.array(img, dtype=np.float32)
