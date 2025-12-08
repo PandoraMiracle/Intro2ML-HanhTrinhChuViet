@@ -43,7 +43,7 @@ def extract_edge_features(images):
 
         features.append(magnitude.flatten())
 
-    return np.array(features, dtype=np.float32)
+    return np.array(features, dtype=np.float64)
 
 
 # ---------------- Load model + transform ----------------
