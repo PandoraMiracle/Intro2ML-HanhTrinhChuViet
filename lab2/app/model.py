@@ -44,3 +44,8 @@ class SoftmaxRegression:
         z = X @ self.W + self.b
         y_pred = self.softmax(z)
         return np.argmax(y_pred, axis=1)
+    
+    def predict_proba(self, X):
+        """Trả về xác suất của từng lớp (N, n_classes)"""
+        z = X @ self.W + self.b
+        return self.softmax(z)
