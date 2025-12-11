@@ -84,7 +84,7 @@ def load_checkpoint(ckpt_path: str, model_name: str):
     if "b" in data: softmax.b = data["b"]
     else: raise KeyError("Checkpoint missing bias.")
 
-    if model_name == "pca":
+    if model_name == "PCA":
         U_m = data["U_m"]
         mu = data["mu"]
         n_components = U_m.shape[1] if U_m.ndim == 2 else int(data.get("n_components", 0))
@@ -92,9 +92,9 @@ def load_checkpoint(ckpt_path: str, model_name: str):
         pca.mu = mu
         pca.U_m = U_m
         transform = pca
-    elif model_name == "edges":
+    elif model_name == "Edges (Sobel)":
         transform = extract_edge_features
-    elif model_name == "raw":
+    elif model_name == "Raw Pixels":
         transform = lambda x: x
     else:
         raise ValueError(f"Unknown model_name: {model_name}")
@@ -102,10 +102,16 @@ def load_checkpoint(ckpt_path: str, model_name: str):
     return softmax, transform
 
 # ---------------- UI ----------------
-st.title("Softmax Regression Evaluation")
+st.title("Handwritten Digit Recognition Application or Evaluation")
 
-name_model = st.selectbox("Select model type", options=["pca", "edges", "raw"])
-ckpt_file = ROOT / "para_model" / f"model_{name_model}.npz"
+name_model = st.selectbox("Select model type", options=["PCA", "Edges (Sobel)", "Raw Pixels"], index=0)
+if name_model == "Edges (Sobel)":
+    name_load = "edges"
+elif name_model == "Raw Pixels":
+    name_load = "raw"
+else:
+    name_load = "pca"
+ckpt_file = ROOT / "para_model" / f"model_{name_load}.npz"
 softmax, transform = load_checkpoint(str(ckpt_file), model_name=name_model)
 
 st.write("Upload a test dataset (.npz) containing `images` and `labels`.")
@@ -129,11 +135,11 @@ if test_file is not None:
 
     X_test_flat = normalize_if_needed(X_test_flat)
 
-    if name_model == "edges":
+    if name_model == "Edges (Sobel)":
         if X_test.ndim == 2: X_img = X_test.reshape(len(X_test), 28, 28)
         else: X_img = X_test
         X_test_transformed = transform(X_img)
-    elif name_model == "pca":
+    elif name_model == "PCA":
         X_test_transformed = transform.transform(X_test_flat)
     else:
         X_test_transformed = transform(X_test_flat)
@@ -176,11 +182,11 @@ if single_img is not None:
     if img_arr.max() > 1.5:
         img_arr = img_arr / 255.0
 
-    if name_model == "edges":
+    if name_model == "Edges (Sobel)":
         x_transformed = extract_edge_features(img_arr[None, ...])
     else:
         x_flat = img_arr.reshape(1, -1)
-        if name_model == "pca":
+        if name_model == "PCA":
             x_transformed = transform.transform(x_flat)
         else:
             x_transformed = transform(x_flat)
@@ -188,7 +194,7 @@ if single_img is not None:
     pred_label = softmax.predict(x_transformed)[0]
     pred_probs = softmax.predict_proba(x_transformed)[0] # <--- MỚI
 
-    st.info(f"Predicted Label: {pred_label}")
+    st.info(f"Predicted Digit: {pred_label}")
 
     col1, col2 = st.columns([1, 2])
     with col1:
