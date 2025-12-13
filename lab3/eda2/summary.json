@@ -1,0 +1,354 @@
+{
+  "root": "E:\\Deep Seek OCR\\DeepSeek-OCR-main\\DeepSeek-OCR-main\\data\\VNOnDB_processed\\Data_processed\\InkData_word_processed",
+  "total_stems": 110746,
+  "matched_pairs": 110746,
+  "missing_txt": 0,
+  "missing_png": 0,
+  "image_open_errors": 0,
+  "thresholds": {
+    "min_w": 218,
+    "min_h": 174,
+    "max_w": 523,
+    "max_h": 396,
+    "aspect_lo": 0.4772727272727273,
+    "aspect_hi": 3.248447204968944,
+    "white_pct_hi": 0.995,
+    "black_pct_hi": 0.6,
+    "std_lo": 11.562509978027597,
+    "blur_lo": 1005.6720275878906
+  },
+  "label_len": {
+    "min": 1,
+    "median": 3.0,
+    "p95": 5,
+    "p99": 6,
+    "max": 11
+  },
+  "suggestions": {
+    "max_target_length_recommend": 6,
+    "image_height_recommend": 365
+  },
+  "charset_size": 147,
+  "top_chars": [
+    {
+      "char": "n",
+      "count": 43466
+    },
+    {
+      "char": "h",
+      "count": 31272
+    },
+    {
+      "char": "t",
+      "count": 21272
+    },
+    {
+      "char": "c",
+      "count": 20917
+    },
+    {
+      "char": "i",
+      "count": 20900
+    },
+    {
+      "char": "g",
+      "count": 20783
+    },
+    {
+      "char": "a",
+      "count": 9906
+    },
+    {
+      "char": "u",
+      "count": 9878
+    },
+    {
+      "char": "đ",
+      "count": 9467
+    },
+    {
+      "char": "m",
+      "count": 8665
+    },
+    {
+      "char": "à",
+      "count": 7995
+    },
+    {
+      "char": "ư",
+      "count": 6775
+    },
+    {
+      "char": "o",
+      "count": 6707
+    },
+    {
+      "char": "r",
+      "count": 6022
+    },
+    {
+      "char": "l",
+      "count": 5881
+    },
+    {
+      "char": "v",
+      "count": 5731
+    },
+    {
+      "char": "y",
+      "count": 5325
+    },
+    {
+      "char": "á",
+      "count": 4939
+    },
+    {
+      "char": "b",
+      "count": 4848
+    },
+    {
+      "char": "p",
+      "count": 4409
+    },
+    {
+      "char": "k",
+      "count": 4359
+    },
+    {
+      "char": "ô",
+      "count": 4216
+    },
+    {
+      "char": "ế",
+      "count": 3251
+    },
+    {
+      "char": "s",
+      "count": 3086
+    },
+    {
+      "char": "ó",
+      "count": 3009
+    },
+    {
+      "char": "ạ",
+      "count": 2969
+    },
+    {
+      "char": "ả",
+      "count": 2865
+    },
+    {
+      "char": "ộ",
+      "count": 2857
+    },
+    {
+      "char": "ờ",
+      "count": 2748
+    },
+    {
+      "char": "ệ",
+      "count": 2742
+    },
+    {
+      "char": "ấ",
+      "count": 2636
+    },
+    {
+      "char": "â",
+      "count": 2565
+    },
+    {
+      "char": "T",
+      "count": 2533
+    },
+    {
+      "char": "ê",
+      "count": 2522
+    },
+    {
+      "char": "ớ",
+      "count": 2440
+    },
+    {
+      "char": "ố",
+      "count": 2250
+    },
+    {
+      "char": "d",
+      "count": 2247
+    },
+    {
+      "char": "ì",
+      "count": 2079
+    },
+    {
+      "char": "ề",
+      "count": 1959
+    },
+    {
+      "char": "N",
+      "count": 1929
+    },
+    {
+      "char": "0",
+      "count": 1922
+    },
+    {
+      "char": "ị",
+      "count": 1912
+    },
+    {
+      "char": "x",
+      "count": 1845
+    },
+    {
+      "char": "ơ",
+      "count": 1732
+    },
+    {
+      "char": "ể",
+      "count": 1714
+    },
+    {
+      "char": "ủ",
+      "count": 1685
+    },
+    {
+      "char": "q",
+      "count": 1669
+    },
+    {
+      "char": "ợ",
+      "count": 1661
+    },
+    {
+      "char": "ậ",
+      "count": 1650
+    },
+    {
+      "char": "C",
+      "count": 1627
+    },
+    {
+      "char": "ã",
+      "count": 1426
+    },
+    {
+      "char": "ầ",
+      "count": 1412
+    },
+    {
+      "char": "ự",
+      "count": 1358
+    },
+    {
+      "char": "ở",
+      "count": 1339
+    },
+    {
+      "char": "e",
+      "count": 1325
+    },
+    {
+      "char": "H",
+      "count": 1199
+    },
+    {
+      "char": "ă",
+      "count": 1190
+    },
+    {
+      "char": "ứ",
+      "count": 1181
+    },
+    {
+      "char": "ú",
+      "count": 1164
+    },
+    {
+      "char": "í",
+      "count": 1115
+    },
+    {
+      "char": "1",
+      "count": 1074
+    },
+    {
+      "char": "V",
+      "count": 1065
+    },
+    {
+      "char": "ồ",
+      "count": 1038
+    },
+    {
+      "char": "ụ",
+      "count": 1036
+    },
+    {
+      "char": "2",
+      "count": 1012
+    },
+    {
+      "char": "B",
+      "count": 1008
+    },
+    {
+      "char": "ữ",
+      "count": 1004
+    },
+    {
+      "char": "ừ",
+      "count": 897
+    },
+    {
+      "char": "Đ",
+      "count": 862
+    },
+    {
+      "char": "ọ",
+      "count": 841
+    },
+    {
+      "char": "ò",
+      "count": 803
+    },
+    {
+      "char": "ổ",
+      "count": 763
+    },
+    {
+      "char": "P",
+      "count": 755
+    },
+    {
+      "char": "ặ",
+      "count": 742
+    },
+    {
+      "char": "ù",
+      "count": 721
+    },
+    {
+      "char": "ắ",
+      "count": 708
+    },
+    {
+      "char": "S",
+      "count": 689
+    },
+    {
+      "char": "3",
+      "count": 635
+    },
+    {
+      "char": "ũ",
+      "count": 623
+    },
+    {
+      "char": "ỉ",
+      "count": 609
+    }
+  ]
+}
