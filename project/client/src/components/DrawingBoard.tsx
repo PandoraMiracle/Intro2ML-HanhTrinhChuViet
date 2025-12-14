@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 type Props = {
     onSave?: (imageData: string) => void
-    onUploaded?: (url: string) => void
+    onUploaded?: (url: string, result?: any) => void
     uploadUrl?: string
     strokeColor?: string
     strokeWidth?: number
@@ -27,8 +27,8 @@ const DrawingBoard = ({
 
         const resize = () => {
             const parent = canvas.parentElement
-            const w = parent?.clientWidth ?? window.innerWidth
-            const h = parent?.clientHeight ?? 500
+            const w = parent?.clientWidth ?? 600
+            const h = parent?.clientHeight ?? 250
             canvas.width = w
             canvas.height = h
         }
@@ -120,7 +120,7 @@ const DrawingBoard = ({
         try {
             setIsUploading(true)
             setUploadMsg(null)
-            
+
             // Convert canvas to blob
             canvas.toBlob(async (blob: Blob | null) => {
                 if (!blob) {
@@ -137,10 +137,17 @@ const DrawingBoard = ({
                     method: 'POST',
                     body: formData,
                 })
-                
+
                 if (!resp.ok) throw new Error('Upload không thành công')
-                const data = (await resp.json()) as { url?: string; message?: string; success?: boolean }
-                if (data.url && onUploaded) onUploaded(data.url)
+                const data = (await resp.json()) as {
+                    url?: string
+                    message?: string
+                    success?: boolean
+                    data?: any
+                }
+                if (onUploaded) {
+                    onUploaded(data.url || '', data.data || data)
+                }
                 setUploadMsg(data.message || 'Đã upload thành công')
                 setIsUploading(false)
             }, 'image/png')
@@ -158,7 +165,7 @@ const DrawingBoard = ({
     }
 
     return (
-        <div style={{ width: '100%', height: '500px', position: 'relative' }}>
+        <div style={{ width: '100%', maxWidth: '600px', height: '250px', margin: '0 auto', position: 'relative' }}>
             <canvas
                 ref={canvasRef}
                 style={{
