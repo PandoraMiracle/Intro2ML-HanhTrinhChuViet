@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 type Props = {
     onSave?: (imageData: string) => void
-    onUploaded?: (url: string) => void
+    onUploaded?: (url: string, result?: any) => void
     uploadUrl?: string
     strokeColor?: string
     strokeWidth?: number
@@ -27,8 +27,8 @@ const DrawingBoard = ({
 
         const resize = () => {
             const parent = canvas.parentElement
-            const w = parent?.clientWidth ?? window.innerWidth
-            const h = parent?.clientHeight ?? 500
+            const w = parent?.clientWidth ?? 600
+            const h = parent?.clientHeight ?? 250
             canvas.width = w
             canvas.height = h
         }
@@ -194,7 +194,7 @@ const DrawingBoard = ({
     }
 
     return (
-        <div style={{ width: '100%', height: '500px', position: 'relative' }}>
+        <div style={{ width: '100%', maxWidth: '600px', height: '250px', margin: '0 auto', position: 'relative' }}>
             <canvas
                 ref={canvasRef}
                 style={{

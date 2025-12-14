@@ -1,29 +1,101 @@
-import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Footer from './components/Footer'
-import Header from './components/Header'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import GamePage from './pages/GamePage'
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import GamePage from "./pages/GamePage";
+import Layout from "./layouts/mainLayout";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <div className="page-shell">
-        <Header />
-        <main className="content">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/game" element={<GamePage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
-  )
+// Layout component
+
+// Register action handler
+async function registerAction({ request }: { request: Request }) {
+  const formData = await request.formData();
+  const data = {
+    fullname: formData.get("fullname"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
+
+  try {
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return { error: result.message || "Đăng ký thất bại" };
+    }
+
+    // Redirect to login page on success
+    window.location.href = "/login";
+    return { success: true };
+  } catch (error) {
+    return { error: "Lỗi kết nối đến server" };
+  }
 }
 
-export default App
+// Login action handler
+async function loginAction({ request }: { request: Request }) {
+  const formData = await request.formData();
+  const data = {
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
+
+  try {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return { error: result.message || "Đăng nhập thất bại" };
+    }
+
+    // Store token and redirect
+    localStorage.setItem("token", result.token);
+    window.location.href = "/game";
+    return { success: true };
+  } catch (error) {
+    return { error: "Lỗi kết nối đến server" };
+  }
+}
+
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+        action: loginAction,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
+        action: registerAction,
+      },
+      {
+        path: "/game",
+        element: <GamePage />,
+      },
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
