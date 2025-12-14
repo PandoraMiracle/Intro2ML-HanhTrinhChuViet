@@ -1,33 +1,201 @@
 from flask import Flask, request, jsonify
 from PIL import Image
 import io
+import os
+
+import numpy as np
+import cv2
+
+# PaddleOCR
+from paddleocr import PaddleOCR
+
+# TrOCR fallback
+import torch
+from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Welcome to the Python Server!"
+# =============================
+#  Helpers
+# =============================
+def ensure_white_bg(pil_img: Image.Image) -> Image.Image:
+    """
+    Canvas thường gửi PNG RGBA (nền trong suốt).
+    Nếu convert RGB trực tiếp sẽ bị nền đen -> OCR fail.
+    Hàm này ép nền trắng chuẩn.
+    """
+    if pil_img.mode in ("RGBA", "LA"):
+        bg = Image.new("RGBA", pil_img.size, (255, 255, 255, 255))
+        pil_img = Image.alpha_composite(bg, pil_img.convert("RGBA")).convert("RGB")
+    else:
+        pil_img = pil_img.convert("RGB")
+    return pil_img
 
-@app.route('/predict', methods=['POST'])
+
+def crop_to_ink(pil_img: Image.Image, pad: int = 20) -> Image.Image:
+    """
+    Crop sát vùng có nét (không trắng) để tránh ảnh quá trống khiến OCR đoán bừa.
+    """
+    pil_img = ensure_white_bg(pil_img)
+    gray = np.array(pil_img.convert("L"))
+
+    # pixel "không trắng"
+    mask = gray < 245
+    if not mask.any():
+        return pil_img
+
+    ys, xs = np.where(mask)
+    x0, x1 = xs.min(), xs.max()
+    y0, y1 = ys.min(), ys.max()
+
+    x0 = max(0, x0 - pad)
+    y0 = max(0, y0 - pad)
+    x1 = min(gray.shape[1] - 1, x1 + pad)
+    y1 = min(gray.shape[0] - 1, y1 + pad)
+
+    return pil_img.crop((x0, y0, x1 + 1, y1 + 1))
+
+
+def preprocess_for_paddle(pil_img: Image.Image) -> np.ndarray:
+    """
+    Chuẩn hoá ảnh cho PaddleOCR:
+    - ép nền trắng
+    - crop sát chữ
+    - tăng tương phản nhẹ (CLAHE)
+    - chuyển BGR (OpenCV)
+    """
+    pil_img = crop_to_ink(pil_img, pad=25)
+    rgb = np.array(pil_img)
+
+    # CLAHE trên kênh L (LAB)
+    lab = cv2.cvtColor(rgb, cv2.COLOR_RGB2LAB)
+    l, a, b = cv2.split(lab)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    l2 = clahe.apply(l)
+    lab2 = cv2.merge([l2, a, b])
+    rgb2 = cv2.cvtColor(lab2, cv2.COLOR_LAB2RGB)
+
+    bgr = cv2.cvtColor(rgb2, cv2.COLOR_RGB2BGR)
+    return bgr
+
+
+def preprocess_for_trocr(pil_img: Image.Image) -> Image.Image:
+    """
+    Preprocess cho TrOCR (handwritten):
+    - ép nền trắng
+    - crop sát chữ
+    - threshold (Otsu) để nét rõ
+    - dilate nhẹ cho nét mảnh canvas
+    - trả về RGB
+    """
+    pil_img = crop_to_ink(pil_img, pad=30)
+    gray = np.array(pil_img.convert("L"))
+
+    # nhị phân hoá: chữ đen -> foreground (invert)
+    _, th = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+    # làm dày nét nhẹ
+    th = cv2.dilate(th, np.ones((2, 2), np.uint8), iterations=1)
+
+    # đảo lại: chữ đen nền trắng
+    th = 255 - th
+    return Image.fromarray(th).convert("RGB")
+
+
+def run_trocr(pil_img: Image.Image) -> str:
+    pil_img = preprocess_for_trocr(pil_img)
+    pixel_values = trocr_processor(images=pil_img, return_tensors="pt").pixel_values.to(device)
+
+    with torch.no_grad():
+        generated_ids = trocr_model.generate(pixel_values, max_length=32)
+
+    text = trocr_processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+    return text.strip()
+
+
+# =============================
+#  Load models (1 lần)
+# =============================
+paddle = PaddleOCR(
+    lang="vi",
+    use_textline_orientation=True
+)
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+trocr_processor = TrOCRProcessor.from_pretrained(
+    "microsoft/trocr-base-handwritten",
+    use_fast=True
+)
+trocr_model = VisionEncoderDecoderModel.from_pretrained(
+    "microsoft/trocr-base-handwritten"
+).to(device)
+trocr_model.eval()
+
+
+# =============================
+#  Routes
+# =============================
+@app.route("/")
+def home():
+    return "Welcome to the Python OCR Server!"
+
+
+@app.route("/predict", methods=["POST"])
 def predict():
-    if 'image' not in request.files:
-        return jsonify({'error': 'No image part in the request'}), 400
-    
-    file = request.files['image']
+    if "image" not in request.files:
+        return jsonify({"error": "No image part in the request"}), 400
+
+    file = request.files["image"]
 
     try:
         img_bytes = file.read()
-        img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
-        
-        # Hiển thị hình ảnh
-        img.show()
+        pil_img = Image.open(io.BytesIO(img_bytes))
+
+        # ===== PaddleOCR detect+recog (dùng predict) =====
+        bgr = preprocess_for_paddle(pil_img)
+        result = paddle.predict(bgr)
+
+        details = []
+        texts = []
+
+        # PaddleOCR v3 predict() -> list[Result], lấy dict qua .json
+        if result and len(result) > 0 and hasattr(result[0], "json"):
+            r = result[0].json  # dict
+            rec_texts = r.get("rec_texts", [])
+            rec_scores = r.get("rec_scores", [])
+            rec_polys = r.get("rec_polys", [])
+
+            for txt, score, poly in zip(rec_texts, rec_scores, rec_polys):
+                txt = (txt or "").strip()
+                if txt:
+                    texts.append(txt)
+                details.append({
+                    "text": txt,
+                    "score": float(score) if score is not None else 0.0,
+                    "box": poly
+                })
+
+        ocr_text = " ".join(texts).strip()
+        num_boxes = len(details)
+
+        # ===== Fallback TrOCR (handwritten) =====
+        model_used = "paddle"
+        if num_boxes == 0 or ocr_text == "":
+            ocr_text = run_trocr(pil_img)
+            model_used = "trocr_fallback"
 
         return jsonify({
-            'message': 'OK',
-            'dummy_prediction': 'cat'  
+            "message": "OK",
+            "model_used": model_used,
+            "num_boxes": num_boxes,
+            "ocr_text": ocr_text,
+            "details": details
         })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+if __name__ == "__main__":
+    # dev
+    app.run(host="0.0.0.0", port=5000, debug=True)

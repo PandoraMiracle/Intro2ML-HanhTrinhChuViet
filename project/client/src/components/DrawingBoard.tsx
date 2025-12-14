@@ -11,8 +11,8 @@ type Props = {
 const DrawingBoard = ({
     onSave,
     onUploaded,
-    uploadUrl = '/api/upload',
-    strokeColor = '#1f3c32',
+    uploadUrl = 'http://localhost:8080/pic/upload',
+    strokeColor = '#000000',
     strokeWidth = 3,
 }: Props) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -113,39 +113,75 @@ const DrawingBoard = ({
     const handleSave = async () => {
         const canvas = canvasRef.current
         if (!canvas) return
+        
+        // Tạo canvas mới với nền trắng để gửi BE
+        const uploadCanvas = document.createElement('canvas')
+        // Giảm kích cỡ ảnh (50% kích cỡ gốc)
+        uploadCanvas.width = canvas.width * 0.5
+        uploadCanvas.height = canvas.height * 0.5
+        const uploadCtx = uploadCanvas.getContext('2d')
+        if (uploadCtx) {
+            uploadCtx.fillStyle = '#ffffff'
+            uploadCtx.fillRect(0, 0, uploadCanvas.width, uploadCanvas.height)
+            
+            // Đặt màu vẽ thành trắng (#ffffff) để gửi BE
+            uploadCtx.strokeStyle = '#ffffff'
+            uploadCtx.lineWidth = strokeWidth * 0.5
+            uploadCtx.lineCap = 'round'
+            
+            // Scale canvas khi vẽ để lấy ảnh nhỏ hơn
+            uploadCtx.scale(0.5, 0.5)
+            uploadCtx.drawImage(canvas, 0, 0)
+        }
+        
         const imageData = canvas.toDataURL('image/png')
         if (onSave) onSave(imageData)
 
         if (!uploadUrl) return
+        
+        setIsUploading(true)
+        setUploadMsg(null)
+        
         try {
-            setIsUploading(true)
-            setUploadMsg(null)
+            // Convert canvas to blob and upload
+            const blobPromise = new Promise<Blob>((resolve) => {
+                uploadCanvas.toBlob((blob) => {
+                    if (blob) resolve(blob)
+                }, 'image/png')
+            })
+
+            const blob = await blobPromise
+            console.log('Blob size:', blob.size, 'bytes')
+
+            // Create FormData
+            const formData = new FormData()
+            formData.append('image', blob, 'drawing.png')
+
+            // Debug: kiểm tra FormData entries
+            for (const [key, value] of formData.entries()) {
+                console.log('FormData entry:', key, value)
+            }
+
+            console.log('Gửi ảnh tới:', uploadUrl)
+
+            const resp = await fetch(uploadUrl, {
+                method: 'POST',
+                body: formData,
+            })
+
+            const data = (await resp.json()) as { url?: string; message?: string; success?: boolean }
+            console.log('Response từ server:', data)
             
-            // Convert canvas to blob
-            canvas.toBlob(async (blob: Blob | null) => {
-                if (!blob) {
-                    setUploadMsg('Không thể tạo blob từ canvas')
-                    setIsUploading(false)
-                    return
-                }
-
-                // Create FormData and append blob as file
-                const formData = new FormData()
-                formData.append('image', blob, 'drawing.png')
-
-                const resp = await fetch(uploadUrl, {
-                    method: 'POST',
-                    body: formData,
-                })
-                
-                if (!resp.ok) throw new Error('Upload không thành công')
-                const data = (await resp.json()) as { url?: string; message?: string; success?: boolean }
-                if (data.url && onUploaded) onUploaded(data.url)
-                setUploadMsg(data.message || 'Đã upload thành công')
-                setIsUploading(false)
-            }, 'image/png')
+            if (!resp.ok) {
+                throw new Error(data.message || 'Upload không thành công')
+            }
+            
+            if (data.url && onUploaded) onUploaded(data.url)
+            setUploadMsg(data.message || 'Đã upload thành công')
         } catch (err) {
+            console.error('Lỗi upload:', err)
             setUploadMsg((err as Error).message || 'Lỗi upload')
+        } finally {
             setIsUploading(false)
         }
     }

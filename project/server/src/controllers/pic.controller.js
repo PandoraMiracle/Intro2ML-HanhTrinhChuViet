@@ -22,6 +22,7 @@ export const uploadPic = async (req, res) => {
     });
 
     const data = await flaskResponse.json();
+    console.log(data);
 
     if (!flaskResponse.ok) {
       return res.json({
