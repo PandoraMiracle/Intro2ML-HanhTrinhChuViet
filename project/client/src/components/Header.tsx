@@ -1,15 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
     <header className="top-nav">
-      <div className="brand">
+      <Link className="brand" to="/">
         <span className="brand-mark">HT</span>
         <div className="brand-copy">
           <p className="brand-name">Hành trình tiếng Việt</p>
-          <p className="brand-tagline">Học tiếng Việt kiểu game</p>
         </div>
-      </div>
+      </Link>
       <div className="nav-actions">
         <Link className="ghost-link" to="/#concept">
           Khái niệm
@@ -17,17 +16,17 @@ function Header() {
         <Link className="ghost-link" to="/#features">
           Tính năng
         </Link>
-        {localStorage.getItem('token') ? (
+        {localStorage.getItem("token") ? (
           <>
             <Link className="ghost-link" to="/game">
               Chơi game
             </Link>
-            <button 
-              className="cta ghost" 
+            <button
+              className="cta ghost"
               onClick={() => {
-                localStorage.removeItem('token')
-                localStorage.removeItem('user')
-                window.location.href = '/'
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/";
               }}
             >
               Đăng xuất
@@ -47,8 +46,7 @@ function Header() {
         )}
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
-
+export default Header;

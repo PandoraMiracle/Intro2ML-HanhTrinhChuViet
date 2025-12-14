@@ -12,6 +12,19 @@
   border: 1px solid #e5f0df;
   border-radius: 14px;
   box-shadow: var(--shadow-soft);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+body.popup-open .top-nav {
+  opacity: 0.3;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+body.popup-open .footer {
+  opacity: 0.3;
+  filter: blur(2px);
+  pointer-events: none;
 }
 
 .brand {
