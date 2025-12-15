@@ -1,3 +1,10 @@
+// ========================================
+// FLASK SERVER URL - Thay đổi khi dùng Colab
+// ========================================
+// Local: "http://localhost:5000"
+// Colab: Paste ngrok URL từ Colab, ví dụ: "https://xxxx-xx-xx-xxx-xxx.ngrok-free.app"
+const FLASK_SERVER_URL = "http://localhost:5000";
+
 export const uploadPic = async (req, res) => {
   const file = req.file;
 
@@ -16,7 +23,9 @@ export const uploadPic = async (req, res) => {
       file.originalname
     );
 
-    const flaskResponse = await fetch("http://localhost:5000/predict", {
+    console.log(`Gửi request tới: ${FLASK_SERVER_URL}/predict`);
+
+    const flaskResponse = await fetch(`${FLASK_SERVER_URL}/predict`, {
       method: "POST",
       body: formData,
     });

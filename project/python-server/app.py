@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from PIL import Image
 import io
-import os
 
 import numpy as np
 import cv2
@@ -9,7 +8,11 @@ import cv2
 # PaddleOCR
 from paddleocr import PaddleOCR
 
-# TrOCR fallback
+# VietOCR (Vietnamese printed text)
+from vietocr.tool.predictor import Predictor
+from vietocr.tool.config import Cfg
+
+# TrOCR fallback (handwritten; not Vietnamese-optimized)
 import torch
 from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 
@@ -20,9 +23,8 @@ app = Flask(__name__)
 # =============================
 def ensure_white_bg(pil_img: Image.Image) -> Image.Image:
     """
-    Canvas thường gửi PNG RGBA (nền trong suốt).
-    Nếu convert RGB trực tiếp sẽ bị nền đen -> OCR fail.
-    Hàm này ép nền trắng chuẩn.
+    Canvas hay gửi PNG RGBA (nền trong suốt). Convert RGB thẳng sẽ ra nền đen -> OCR fail.
+    Ép nền trắng.
     """
     if pil_img.mode in ("RGBA", "LA"):
         bg = Image.new("RGBA", pil_img.size, (255, 255, 255, 255))
@@ -39,7 +41,6 @@ def crop_to_ink(pil_img: Image.Image, pad: int = 20) -> Image.Image:
     pil_img = ensure_white_bg(pil_img)
     gray = np.array(pil_img.convert("L"))
 
-    # pixel "không trắng"
     mask = gray < 245
     if not mask.any():
         return pil_img
@@ -67,7 +68,6 @@ def preprocess_for_paddle(pil_img: Image.Image) -> np.ndarray:
     pil_img = crop_to_ink(pil_img, pad=25)
     rgb = np.array(pil_img)
 
-    # CLAHE trên kênh L (LAB)
     lab = cv2.cvtColor(rgb, cv2.COLOR_RGB2LAB)
     l, a, b = cv2.split(lab)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
@@ -79,49 +79,60 @@ def preprocess_for_paddle(pil_img: Image.Image) -> np.ndarray:
     return bgr
 
 
+def preprocess_for_vietocr(pil_img: Image.Image) -> Image.Image:
+    """
+    Preprocess cho VietOCR (chữ in tiếng Việt):
+    - ép nền trắng
+    - crop sát chữ
+    - upscale nhẹ cho nét canvas/ảnh nhỏ
+    """
+    pil_img = crop_to_ink(pil_img, pad=25).convert("RGB")
+
+    # upscale nếu ảnh nhỏ (giúp nhận dạng tốt hơn)
+    w, h = pil_img.size
+    if max(w, h) < 800:
+        pil_img = pil_img.resize((w * 2, h * 2), Image.BICUBIC)
+
+    return pil_img
+
+
 def preprocess_for_trocr(pil_img: Image.Image) -> Image.Image:
     """
     Preprocess cho TrOCR (handwritten):
     - ép nền trắng
     - crop sát chữ
-    - threshold (Otsu) để nét rõ
-    - dilate nhẹ cho nét mảnh canvas
+    - Otsu threshold
+    - dilate nhẹ
     - trả về RGB
     """
     pil_img = crop_to_ink(pil_img, pad=30)
     gray = np.array(pil_img.convert("L"))
 
-    # nhị phân hoá: chữ đen -> foreground (invert)
     _, th = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-
-    # làm dày nét nhẹ
     th = cv2.dilate(th, np.ones((2, 2), np.uint8), iterations=1)
+    th = 255 - th  # chữ đen nền trắng
 
-    # đảo lại: chữ đen nền trắng
-    th = 255 - th
     return Image.fromarray(th).convert("RGB")
-
-
-def run_trocr(pil_img: Image.Image) -> str:
-    pil_img = preprocess_for_trocr(pil_img)
-    pixel_values = trocr_processor(images=pil_img, return_tensors="pt").pixel_values.to(device)
-
-    with torch.no_grad():
-        generated_ids = trocr_model.generate(pixel_values, max_length=32)
-
-    text = trocr_processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-    return text.strip()
 
 
 # =============================
 #  Load models (1 lần)
 # =============================
+# PaddleOCR: detect + recog (Vietnamese)
 paddle = PaddleOCR(
     lang="vi",
     use_textline_orientation=True
 )
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# VietOCR: Vietnamese printed text recognizer
+vietocr_cfg = Cfg.load_config_from_name("vgg_transformer")
+vietocr_cfg["device"] = device
+vietocr_cfg["predictor"]["beamsearch"] = False
+vietocr = Predictor(vietocr_cfg)
+
+# TrOCR: handwritten fallback (not Vietnamese-optimized)
 trocr_processor = TrOCRProcessor.from_pretrained(
     "microsoft/trocr-base-handwritten",
     use_fast=True
@@ -132,12 +143,29 @@ trocr_model = VisionEncoderDecoderModel.from_pretrained(
 trocr_model.eval()
 
 
+def run_vietocr(pil_img: Image.Image) -> str:
+    img = preprocess_for_vietocr(pil_img)
+    text = vietocr.predict(img)
+    return (text or "").strip()
+
+
+def run_trocr(pil_img: Image.Image) -> str:
+    img = preprocess_for_trocr(pil_img)
+    pixel_values = trocr_processor(images=img, return_tensors="pt").pixel_values.to(device)
+
+    with torch.no_grad():
+        generated_ids = trocr_model.generate(pixel_values, max_length=32)
+
+    text = trocr_processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+    return (text or "").strip()
+
+
 # =============================
 #  Routes
 # =============================
 @app.route("/")
 def home():
-    return "Welcome to the Python OCR Server!"
+    return "Welcome to the Python OCR Server! (PaddleOCR -> VietOCR -> TrOCR)"
 
 
 @app.route("/predict", methods=["POST"])
@@ -151,7 +179,7 @@ def predict():
         img_bytes = file.read()
         pil_img = Image.open(io.BytesIO(img_bytes))
 
-        # ===== PaddleOCR detect+recog (dùng predict) =====
+        # ===== 1) PaddleOCR detect+recog =====
         bgr = preprocess_for_paddle(pil_img)
         result = paddle.predict(bgr)
 
@@ -178,9 +206,14 @@ def predict():
         ocr_text = " ".join(texts).strip()
         num_boxes = len(details)
 
-        # ===== Fallback TrOCR (handwritten) =====
+        # ===== 2) Fallback VietOCR (Vietnamese printed) =====
         model_used = "paddle"
         if num_boxes == 0 or ocr_text == "":
+            ocr_text = run_vietocr(pil_img)
+            model_used = "vietocr_fallback"
+
+        # ===== 3) Last resort TrOCR (handwritten) =====
+        if ocr_text == "":
             ocr_text = run_trocr(pil_img)
             model_used = "trocr_fallback"
 
@@ -197,5 +230,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    # dev
     app.run(host="0.0.0.0", port=5000, debug=True)

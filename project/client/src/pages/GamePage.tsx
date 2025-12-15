@@ -306,15 +306,15 @@ function GamePage() {
                                                 color: 'var(--fern-700)',
                                             }}
                                         >
-                                            Kết quả: {typeof drawingResults[currentQuestion.id] === 'string'
+                                            {typeof drawingResults[currentQuestion.id] === 'string'
                                                 ? drawingResults[currentQuestion.id]
-                                                : drawingResults[currentQuestion.id].prediction || drawingResults[currentQuestion.id].text || JSON.stringify(drawingResults[currentQuestion.id])}
+                                                : drawingResults[currentQuestion.id].ocr_text || drawingResults[currentQuestion.id].prediction || drawingResults[currentQuestion.id].text || JSON.stringify(drawingResults[currentQuestion.id])}
                                         </span>
                                     )}
                                 </div>
                                 <div style={{ border: '1px solid #e7f0e4', borderRadius: 12, overflow: 'hidden' }}>
                                     <DrawingBoard
-                                        onUploaded={(url) => handleDrawingUploaded(currentQuestion.id, url)}
+                                        onUploaded={(url, result) => handleDrawingUploaded(currentQuestion.id, url, result)}
                                         strokeColor="var(--fern-700)"
                                         strokeWidth={4}
                                     />

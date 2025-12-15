@@ -169,15 +169,28 @@ const DrawingBoard = ({
                 body: formData,
             })
 
-            const data = (await resp.json()) as { url?: string; message?: string; success?: boolean }
+            const data = (await resp.json()) as { 
+                url?: string; 
+                message?: string; 
+                success?: boolean;
+                data?: {
+                    message?: string;
+                    model_used?: string;
+                    num_boxes?: number;
+                    ocr_text?: string;
+                    details?: any[];
+                }
+            }
             console.log('Response từ server:', data)
             
-            if (!resp.ok) {
+            if (!resp.ok || !data.success) {
                 throw new Error(data.message || 'Upload không thành công')
             }
             
-            if (data.url && onUploaded) onUploaded(data.url)
-            setUploadMsg(data.message || 'Đã upload thành công')
+            // Truyền URL (hoặc empty string) và kết quả OCR từ Flask
+            const ocrResult = data.data?.ocr_text || ''
+            if (onUploaded) onUploaded(ocrResult || 'uploaded', data.data)
+            // setUploadMsg(ocrResult ? `OCR: ${ocrResult}` : 'Đã upload thành công')
         } catch (err) {
             console.error('Lỗi upload:', err)
             setUploadMsg((err as Error).message || 'Lỗi upload')

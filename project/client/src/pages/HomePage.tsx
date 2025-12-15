@@ -10,9 +10,7 @@ function HomePage() {
     <>
       <Hero leaderboard={leaderboard} />
       <Features items={featureHighlights} />
-      <Concept steps={steps} />
       <CTASection />
-      <DrawingBoard />
     </>
   )
 }
