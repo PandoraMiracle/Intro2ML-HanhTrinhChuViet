@@ -1,0 +1,15 @@
+# training outputs / checkpoints
+outputs/
+**/checkpoint-*/
+**/*.pt
+**/*.safetensors
+
+# big archives
+*.zip
+*.tar
+*.7z
+
+# datasets (tuỳ bạn)
+**/*.idx3-ubyte
+**/*.idx1-ubyte
+**/*.csv
