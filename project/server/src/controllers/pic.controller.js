@@ -1,8 +1,3 @@
-// ========================================
-// FLASK SERVER URL - Thay đổi khi dùng Colab
-// ========================================
-// Local: "http://localhost:5000"
-// Colab: Paste ngrok URL từ Colab, ví dụ: "https://xxxx-xx-xx-xxx-xxx.ngrok-free.app"
 const FLASK_SERVER_URL = "http://localhost:5000";
 
 export const uploadPic = async (req, res) => {

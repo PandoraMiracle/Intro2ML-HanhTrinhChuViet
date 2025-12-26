@@ -1,0 +1,66 @@
+# =========================
+# Core (ổn định Py3.11)
+# =========================
+numpy==1.26.4
+scipy==1.11.4
+protobuf==4.25.3
+
+# (không bắt buộc đưa pip vào requirements; để đây nếu bạn muốn)
+pip
+
+# =========================
+# Web + API
+# =========================
+flask
+flask-cors
+pyngrok
+
+# =========================
+# Hugging Face stack
+# =========================
+transformers==4.56.2
+tokenizers>=0.22,<=0.23
+accelerate==0.27.2
+peft==0.8.2
+trl==0.22.2
+datasets==4.3.0
+huggingface_hub>=0.34.0
+hf_transfer
+sentencepiece
+
+# =========================
+# Unsloth + training extras
+# =========================
+unsloth
+unsloth_zoo
+bitsandbytes
+triton
+cut_cross_entropy
+torchao>=0.13.0
+
+# =========================
+# Vision / OCR utils
+# =========================
+timm
+pillow
+
+# =========================
+# Metrics
+# =========================
+jiwer
+rapidfuzz
+
+# =========================
+# Utils / config
+# =========================
+einops
+addict
+easydict
+msgspec
+tyro
+
+# =========================
+# Torch (thường Kaggle có sẵn; local thì tự pin theo CUDA)
+# =========================
+torch
+torchvision

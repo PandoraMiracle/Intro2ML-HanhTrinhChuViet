@@ -11,7 +11,7 @@ type Props = {
 const DrawingBoard = ({
     onSave,
     onUploaded,
-    uploadUrl = 'http://localhost:8080/pic/upload',
+    uploadUrl = '/api/pic/upload',
     strokeColor = '#000000',
     strokeWidth = 3,
 }: Props) => {
