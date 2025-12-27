@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+const FLASK_SERVER_URL = "http://localhost:5000";
+
+>>>>>>> c297edae90a43f457d0bc4ab8fd7e980543ef57c
 export const uploadPic = async (req, res) => {
   const file = req.file;
 
@@ -16,12 +21,22 @@ export const uploadPic = async (req, res) => {
       file.originalname
     );
 
+<<<<<<< HEAD
     const flaskResponse = await fetch("http://localhost:5000/predict", {
+=======
+    console.log(`Gửi request tới: ${FLASK_SERVER_URL}/predict`);
+
+    const flaskResponse = await fetch(`${FLASK_SERVER_URL}/predict`, {
+>>>>>>> c297edae90a43f457d0bc4ab8fd7e980543ef57c
       method: "POST",
       body: formData,
     });
 
     const data = await flaskResponse.json();
+<<<<<<< HEAD
+=======
+    console.log(data);
+>>>>>>> c297edae90a43f457d0bc4ab8fd7e980543ef57c
 
     if (!flaskResponse.ok) {
       return res.json({

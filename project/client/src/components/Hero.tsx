@@ -1,13 +1,22 @@
+<<<<<<< HEAD
 import type { LeaderboardRow } from "../content";
 
 type Props = {
   leaderboard: LeaderboardRow[];
 };
+=======
+import type { LeaderboardRow } from '../content'
+
+type Props = {
+  leaderboard: LeaderboardRow[]
+}
+>>>>>>> c297edae90a43f457d0bc4ab8fd7e980543ef57c
 
 function Hero({ leaderboard }: Props) {
   return (
     <section className="hero">
       <div className="hero-copy">
+<<<<<<< HEAD
         <p className="eyebrow">Gamified Vietnamese · Learn visually</p>
         <h1>
           Grow your Vietnamese fluency
@@ -34,6 +43,33 @@ function Hero({ leaderboard }: Props) {
           </div>
           <div className="stat">
             <p className="stat-label">Words remembered</p>
+=======
+        <p className="eyebrow">Tiếng Việt gamified · Học bằng trực quan</p>
+        <h1>
+          Nuôi dưỡng tiếng Việt trôi chảy
+          <span className="accent-underline"> như khu vườn đang nở</span>
+        </h1>
+        <p className="lede">
+          Nền tảng vui nhộn kết hợp nhiệm vụ, truyện ngắn và phần thưởng. Dành cho người học
+          thích hình ảnh, muốn tiếng Việt mềm mại, rực rỡ và sống động.
+        </p>
+        <div className="cta-row">
+          <button className="cta solid">Bắt đầu hành trình</button>
+          <button className="cta ghost">Xem tour 90s</button>
+          <div className="badge">Mới: Lộ trình Xuân nở</div>
+        </div>
+        <div className="stats">
+          <div className="stat">
+            <p className="stat-label">Chuỗi ngày</p>
+            <p className="stat-value">24 ngày</p>
+          </div>
+          <div className="stat">
+            <p className="stat-label">Phiên trung bình</p>
+            <p className="stat-value">12 phút</p>
+          </div>
+          <div className="stat">
+            <p className="stat-label">Từ vựng đã nhớ</p>
+>>>>>>> c297edae90a43f457d0bc4ab8fd7e980543ef57c
             <p className="stat-value">620</p>
           </div>
         </div>
@@ -55,7 +91,11 @@ function Hero({ leaderboard }: Props) {
             <p className="detail-label">Thưởng hôm nay</p>
             <p className="detail-value">🌼 Huy hiệu Hoa Mai</p>
             <div className="detail-bar">
+<<<<<<< HEAD
               <span style={{ width: "78%" }} />
+=======
+              <span style={{ width: '78%' }} />
+>>>>>>> c297edae90a43f457d0bc4ab8fd7e980543ef57c
             </div>
             <p className="detail-caption">Hoàn thành 2 bài nói để mở khóa.</p>
           </div>
@@ -76,7 +116,15 @@ function Hero({ leaderboard }: Props) {
         </div>
       </div>
     </section>
+<<<<<<< HEAD
   );
 }
 
 export default Hero;
+=======
+  )
+}
+
+export default Hero
+
+>>>>>>> c297edae90a43f457d0bc4ab8fd7e980543ef57c

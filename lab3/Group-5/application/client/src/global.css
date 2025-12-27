@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --fern-900: #0f3b2e;
+  --fern-700: #2e7a55;
+  --fern-500: #4ca76f;
+  --fern-300: #8fd9b4;
+  --mint-200: #d8f3c9;
+  --mint-100: #ecf9e4;
+  --butter-200: #f6f0b3;
+  --butter-100: #fbf7d9;
+  --peach-400: #f7c27d;
+  --peach-300: #f8d1a3;
+  --peach-200: #fbe8cf;
+  --lotus-300: #f8c8d8;
+  --text-900: #0f2a24;
+  --text-700: #1f3c32;
+  --text-500: #3c5b4f;
+  --shadow-soft: 0 20px 50px rgba(24, 74, 53, 0.12);
+  color-scheme: only light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  color: var(--text-900);
+  background: radial-gradient(circle at 20% 20%, #f9f6da 0, #f9f6da 22%, transparent 35%),
+    radial-gradient(circle at 80% 0%, #f6f1c4 0, #f6f1c4 28%, transparent 40%),
+    linear-gradient(160deg, #ebf6e5 0%, #e0f0db 40%, #d4e8cc 100%);
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+.page-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.background-motif {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 12% 30%, rgba(247, 194, 125, 0.18) 0, transparent 40%),
+    radial-gradient(circle at 82% 60%, rgba(76, 167, 111, 0.18) 0, transparent 42%),
+    radial-gradient(circle at 50% 80%, rgba(246, 240, 179, 0.24) 0, transparent 38%);
+  filter: blur(8px);
+  z-index: 0;
+}
+
