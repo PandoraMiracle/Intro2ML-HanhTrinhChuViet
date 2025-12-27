@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import GamePage from "./pages/GamePage";
+import LearningPage from "./pages/LearningPage";
 import Layout from "./layouts/mainLayout";
 
 // Layout component
@@ -89,6 +90,10 @@ const router = createBrowserRouter([
       {
         path: "/game",
         element: <GamePage />,
+      },
+      {
+        path: "/learn",
+        element: <LearningPage />,
       },
     ],
   },

@@ -1,0 +1,140 @@
+/* LearningPage styles */
+
+.learning-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.learning-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--mint-200);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.back-to-map-btn {
+  background: var(--mint-100);
+  border: 1px solid var(--mint-200);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-700);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-to-map-btn:hover {
+  background: var(--mint-200);
+  border-color: var(--fern-300);
+}
+
+.topbar-center {
+  flex: 1;
+  text-align: center;
+}
+
+.app-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-900);
+}
+
+.topbar-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.xp-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--butter-200), var(--butter-100));
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.xp-icon {
+  font-size: 1rem;
+}
+
+.xp-value {
+  font-weight: 700;
+  color: var(--text-900);
+  font-size: 0.95rem;
+}
+
+.xp-label {
+  font-size: 0.75rem;
+  color: var(--text-500);
+  font-weight: 500;
+}
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, var(--peach-200), var(--peach-300));
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.streak-icon {
+  font-size: 1rem;
+}
+
+.streak-value {
+  font-weight: 700;
+  color: var(--text-900);
+  font-size: 0.95rem;
+}
+
+/* Learning content */
+.learning-content {
+  flex: 1;
+  padding-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .learning-topbar {
+    padding: 10px 16px;
+  }
+
+  .app-title {
+    font-size: 0.95rem;
+  }
+
+  .xp-display,
+  .streak-display {
+    padding: 4px 10px;
+  }
+
+  .xp-value,
+  .streak-value {
+    font-size: 0.85rem;
+  }
+
+  .back-to-map-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}

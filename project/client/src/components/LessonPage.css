@@ -1,0 +1,650 @@
+/* LessonPage styles - Global theme integration */
+
+.lesson-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  min-height: 100vh;
+}
+
+/* Progress bar */
+.lesson-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--mint-100);
+  z-index: 100;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--fern-500), var(--fern-300));
+  border-radius: 0 3px 3px 0;
+  transition: width 0.3s ease;
+}
+
+/* Header */
+.lesson-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  margin-top: 10px;
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--mint-200);
+  background: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: var(--mint-100);
+  border-color: var(--fern-300);
+}
+
+.lesson-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-900);
+  margin: 0;
+}
+
+.score-badge {
+  background: linear-gradient(135deg, var(--butter-200), var(--peach-300));
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: var(--text-900);
+  font-size: 0.9rem;
+}
+
+/* Lesson content */
+.lesson-content {
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow-soft);
+  margin-top: 20px;
+}
+
+/* Intro section */
+.lesson-intro {
+  text-align: center;
+}
+
+.sound-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.big-letter {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--fern-700);
+  line-height: 1;
+  text-shadow: 0 4px 12px rgba(46, 122, 85, 0.2);
+}
+
+.pronunciation {
+  font-size: 1.5rem;
+  color: var(--text-500);
+  margin-top: 8px;
+}
+
+.sound-description {
+  font-size: 1.1rem;
+  color: var(--text-700);
+  max-width: 500px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+
+.objectives-box {
+  background: var(--mint-100);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.objectives-box h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  color: var(--fern-700);
+  margin: 0 0 16px;
+}
+
+.objectives-box ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.objectives-box li {
+  color: var(--text-700);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* Vocabulary section */
+.vocab-section {
+  text-align: center;
+}
+
+.vocab-section h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-900);
+  margin-bottom: 24px;
+}
+
+.vocab-carousel {
+  margin-bottom: 24px;
+}
+
+.vocab-card.main-card {
+  background: linear-gradient(135deg, var(--mint-100), var(--butter-100));
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.vocab-image {
+  width: 120px;
+  height: 120px;
+  background: white;
+  border-radius: 16px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.vocab-image img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+.vocab-emoji {
+  font-size: 3rem;
+}
+
+.vocab-word {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--fern-700);
+  margin-bottom: 8px;
+}
+
+.vocab-meaning {
+  font-size: 1rem;
+  color: var(--text-500);
+  margin-bottom: 16px;
+}
+
+.vocab-syllables {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.syllable {
+  background: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--fern-700);
+  font-size: 1.1rem;
+}
+
+.vocab-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.vocab-counter {
+  font-size: 0.9rem;
+  color: var(--text-500);
+  min-width: 60px;
+}
+
+.vocab-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.vocab-thumb {
+  padding: 8px 16px;
+  background: var(--mint-100);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  color: var(--text-700);
+}
+
+.vocab-thumb:hover {
+  background: var(--mint-200);
+}
+
+.vocab-thumb.active {
+  background: var(--fern-500);
+  color: white;
+}
+
+/* Game section */
+.game-section h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-900);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.game-progress {
+  text-align: center;
+  color: var(--text-500);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.question-box {
+  background: var(--mint-100);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.question-text {
+  font-size: 1.2rem;
+  color: var(--text-900);
+  text-align: center;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.option-btn {
+  padding: 16px;
+  border: 2px solid var(--mint-200);
+  background: white;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--fern-300);
+  background: var(--butter-100);
+}
+
+.option-btn.selected {
+  border-color: var(--fern-500);
+  background: var(--mint-200);
+}
+
+.option-btn.correct {
+  border-color: var(--fern-500);
+  background: #d4edda;
+}
+
+.option-btn.incorrect {
+  border-color: #dc3545;
+  background: #f8d7da;
+}
+
+.hint-text {
+  text-align: center;
+  color: var(--peach-400);
+  font-size: 0.9rem;
+  margin-top: 16px;
+  font-style: italic;
+}
+
+.feedback-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+.feedback-box.correct {
+  background: #d4edda;
+  color: #155724;
+}
+
+.feedback-box.incorrect {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.feedback-icon {
+  font-size: 1.5rem;
+}
+
+.game-actions {
+  text-align: center;
+}
+
+/* Sentences section */
+.sentences-section h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-900);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.section-desc {
+  text-align: center;
+  color: var(--text-500);
+  margin-bottom: 24px;
+}
+
+.sentences-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.sentence-card {
+  background: var(--mint-100);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+}
+
+.sentence-text {
+  font-size: 1.3rem;
+  color: var(--text-900);
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+
+.sentence-text .highlight {
+  background: var(--butter-200);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--fern-700);
+  font-weight: 600;
+}
+
+.sentence-translation {
+  font-size: 0.9rem;
+  color: var(--text-500);
+  font-style: italic;
+  margin: 0;
+}
+
+.sound-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.sound-btn:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Writing section */
+.writing-section h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-900);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.stroke-guide {
+  background: var(--butter-100);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.stroke-guide h4 {
+  font-size: 1rem;
+  color: var(--text-700);
+  margin: 0 0 12px;
+}
+
+.stroke-guide ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.stroke-guide li {
+  color: var(--text-700);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.writing-practice {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.guide-letter {
+  text-align: center;
+}
+
+.trace-letter {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 8rem;
+  color: var(--mint-200);
+  font-weight: 700;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drawing-area {
+  background: var(--mint-100);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.drawing-instruction {
+  text-align: center;
+  color: var(--text-700);
+  margin-bottom: 16px;
+}
+
+/* Complete section */
+.complete-section {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.complete-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.complete-section h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  color: var(--fern-700);
+  margin: 0 0 8px;
+}
+
+.complete-title {
+  font-size: 1.1rem;
+  color: var(--text-500);
+  margin-bottom: 32px;
+}
+
+.score-display {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, var(--butter-200), var(--peach-300));
+  padding: 24px 48px;
+  border-radius: 20px;
+  margin-bottom: 32px;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  color: var(--text-500);
+  margin-bottom: 8px;
+}
+
+.score-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--fern-700);
+  line-height: 1;
+}
+
+.score-xp {
+  font-size: 1rem;
+  color: var(--text-500);
+  margin-top: 4px;
+}
+
+.complete-summary {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--mint-100);
+  padding: 12px 20px;
+  border-radius: 12px;
+}
+
+.summary-icon {
+  font-size: 1.2rem;
+}
+
+.complete-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* CTA buttons (using global styles) */
+.cta {
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: inherit;
+}
+
+.cta.solid {
+  background: linear-gradient(135deg, var(--fern-500), var(--fern-700));
+  color: white;
+}
+
+.cta.solid:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46, 122, 85, 0.3);
+}
+
+.cta.solid:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cta.ghost {
+  background: transparent;
+  border: 2px solid var(--mint-200);
+  color: var(--text-700);
+}
+
+.cta.ghost:hover:not(:disabled) {
+  border-color: var(--fern-300);
+  background: var(--mint-100);
+}
+
+.cta.ghost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .lesson-content {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  .big-letter {
+    font-size: 4rem;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .complete-summary {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .vocab-card.main-card {
+    padding: 24px;
+  }
+
+  .vocab-word {
+    font-size: 2rem;
+  }
+}

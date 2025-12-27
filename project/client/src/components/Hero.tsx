@@ -1,38 +1,39 @@
-import type { LeaderboardRow } from '../content'
+import type { LeaderboardRow } from "../content";
 
 type Props = {
-  leaderboard: LeaderboardRow[]
-}
+  leaderboard: LeaderboardRow[];
+};
 
 function Hero({ leaderboard }: Props) {
   return (
     <section className="hero">
       <div className="hero-copy">
-        <p className="eyebrow">Tiếng Việt gamified · Học bằng trực quan</p>
+        <p className="eyebrow">Gamified Vietnamese · Learn visually</p>
         <h1>
-          Nuôi dưỡng tiếng Việt trôi chảy
-          <span className="accent-underline"> như khu vườn đang nở</span>
+          Grow your Vietnamese fluency
+          <span className="accent-underline"> like a blooming garden</span>
         </h1>
         <p className="lede">
-          Nền tảng vui nhộn kết hợp nhiệm vụ, truyện ngắn và phần thưởng. Dành cho người học
-          thích hình ảnh, muốn tiếng Việt mềm mại, rực rỡ và sống động.
+          A fun platform combining missions, short stories, and rewards. For
+          learners who love images and want Vietnamese to be soft, vibrant, and
+          lively.
         </p>
         <div className="cta-row">
-          <button className="cta solid">Bắt đầu hành trình</button>
-          <button className="cta ghost">Xem tour 90s</button>
-          <div className="badge">Mới: Lộ trình Xuân nở</div>
+          <button className="cta solid">Start your journey</button>
+          <button className="cta ghost">See 90s tour</button>
+          <div className="badge">New: Spring Roadmap</div>
         </div>
         <div className="stats">
           <div className="stat">
-            <p className="stat-label">Chuỗi ngày</p>
-            <p className="stat-value">24 ngày</p>
+            <p className="stat-label">Streak</p>
+            <p className="stat-value">24 days</p>
           </div>
           <div className="stat">
-            <p className="stat-label">Phiên trung bình</p>
-            <p className="stat-value">12 phút</p>
+            <p className="stat-label">Avg session</p>
+            <p className="stat-value">12 min</p>
           </div>
           <div className="stat">
-            <p className="stat-label">Từ vựng đã nhớ</p>
+            <p className="stat-label">Words remembered</p>
             <p className="stat-value">620</p>
           </div>
         </div>
@@ -54,7 +55,7 @@ function Hero({ leaderboard }: Props) {
             <p className="detail-label">Thưởng hôm nay</p>
             <p className="detail-value">🌼 Huy hiệu Hoa Mai</p>
             <div className="detail-bar">
-              <span style={{ width: '78%' }} />
+              <span style={{ width: "78%" }} />
             </div>
             <p className="detail-caption">Hoàn thành 2 bài nói để mở khóa.</p>
           </div>
@@ -75,8 +76,7 @@ function Hero({ leaderboard }: Props) {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default Hero
-
+export default Hero;

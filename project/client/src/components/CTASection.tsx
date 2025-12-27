@@ -3,21 +3,20 @@ function CTASection() {
     <section className="cta-section">
       <div className="cta-card">
         <div>
-          <p className="eyebrow">Sẵn sàng học?</p>
-          <h2>Bắt đầu miễn phí và giữ chuỗi ngày đang sáng</h2>
+          <p className="eyebrow">Ready to learn?</p>
+          <h2>Start free and keep your streak shining</h2>
           <p className="section-lede">
-            Tham gia cộng đồng người học trực quan, biến tiếng Việt thành nghi thức nhẹ nhàng
-            mỗi ngày.
+            Join a visual learner community and make Vietnamese a gentle daily
+            ritual.
           </p>
         </div>
         <div className="cta-actions">
-          <button className="cta solid">Tạo tài khoản</button>
-          <button className="cta ghost">Xem chương trình học</button>
+          <button className="cta solid">Create Account</button>
+          <button className="cta ghost">View Curriculum</button>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default CTASection
-
+export default CTASection;
