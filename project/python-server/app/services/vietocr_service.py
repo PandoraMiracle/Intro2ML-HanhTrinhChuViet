@@ -1,10 +1,9 @@
 from PIL import Image
 
 from .preprocess import preprocess_for_vietocr
-from .models import vietocr_predictor
+#from .models import init_model
 
 
-def run_vietocr(pil_img: Image.Image) -> str:
-    img = preprocess_for_vietocr(pil_img)
-    text = vietocr_predictor.predict(img)
+def run_vietocr(model, pil_img: Image.Image) -> str:
+    text = model.predict(pil_img)
     return (text or "").strip()
