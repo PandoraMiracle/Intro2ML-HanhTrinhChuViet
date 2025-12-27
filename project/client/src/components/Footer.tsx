@@ -1,21 +1,14 @@
 function Footer() {
   return (
     <footer className="footer">
-      <p>Được tạo nên với sự ấm áp cho người học tiếng Việt khắp nơi.</p>
+      <p>Created with warmth for Vietnamese learners everywhere.</p>
       <div className="footer-links">
         <a className="ghost-link" href="#">
-          Lộ trình học
-        </a>
-        <a className="ghost-link" href="#">
-          Cộng đồng
-        </a>
-        <a className="ghost-link" href="#">
-          Hỗ trợ
+          How to Use
         </a>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
-
+export default Footer;

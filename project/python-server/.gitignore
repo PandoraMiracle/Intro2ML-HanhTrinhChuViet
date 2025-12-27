@@ -1,1 +1,14 @@
 venv/
+*pycache*/
+*.log
+*.bak
+*__pycache__*/
+*.pth
+.vscode/
+.env/
+.venv/
+*.py[cod]
+*$py.class
+*.pyc
+__pycache__/
+*.py[cod]

@@ -1,11 +1,15 @@
+#from pyexpat import model
+from pathlib import Path
 from flask import Blueprint, jsonify, request
 from PIL import Image
 import io
 
 from ..services.vietocr_service import run_vietocr
-
+from ..services.models import init_model
 ocr_bp = Blueprint("ocr", __name__)
-
+#path_model = str(Path(__file__).parent.parent / "weight_model" / "best_model.pth")
+path_model = None
+model = init_model(path_model)
 
 @ocr_bp.get("/")
 def home():
@@ -24,7 +28,8 @@ def predict():
         pil_img = Image.open(io.BytesIO(img_bytes))
 
         # Fallback VietOCR (Vietnamese printed)
-        ocr_text = run_vietocr(pil_img)
+        
+        ocr_text = run_vietocr(model, pil_img)
         model_used = "vietocr_fallback"
 
         return jsonify({

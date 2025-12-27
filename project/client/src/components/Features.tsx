@@ -1,18 +1,18 @@
-import type { Feature } from '../content'
+import type { Feature } from "../content";
 
 type Props = {
-  items: Feature[]
-}
+  items: Feature[];
+};
 
 function Features({ items }: Props) {
   return (
     <section id="features" className="section">
       <div className="section-head">
-        <p className="eyebrow">Thiết kế để bạn luôn có động lực</p>
-        <h2>Mọi thứ đều như một trò chơi nhẹ nhàng</h2>
+        <p className="eyebrow">Designed to keep you motivated</p>
+        <h2>Everything feels like a gentle game</h2>
         <p className="section-lede">
-          Dành cho người học tiếng Việt yêu hình ảnh, nhịp điệu và chiến thắng nhanh. Nhận
-          cánh hoa, vương miện và XP khi bạn đi qua từng bài.
+          For Vietnamese learners who love visuals, rhythm, and quick wins. Earn
+          petals, crowns, and XP as you progress through each lesson.
         </p>
       </div>
       <div className="grid">
@@ -20,13 +20,12 @@ function Features({ items }: Props) {
           <div key={feature.title} className="feature-card">
             <h3>{feature.title}</h3>
             <p>{feature.copy}</p>
-            <button className="text-link">Xem mẫu nhiệm vụ →</button>
+            <button className="text-link">See sample mission →</button>
           </div>
         ))}
       </div>
     </section>
-  )
+  );
 }
 
-export default Features
-
+export default Features;

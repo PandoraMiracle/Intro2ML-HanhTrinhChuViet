@@ -1,0 +1,319 @@
+{
+  "curriculum": {
+    "title": "Tiếng Việt 1 - Chân Trời Sáng Tạo",
+    "description": "Chương trình học tiếng Việt cho lớp 1 với phương pháp tương tác",
+    "totalTopics": 18,
+    "lessonsPerTopic": 5
+  },
+  "roadmap": [
+    {
+      "topicId": 1,
+      "name": "Trường em",
+      "lessons": [
+        { "lessonId": 1, "title": "Âm A", "sounds": ["A a"] },
+        { "lessonId": 2, "title": "Âm B - C", "sounds": ["B b", "C c"] },
+        { "lessonId": 3, "title": "Âm O - Ô", "sounds": ["O o", "Ô ô"] },
+        { "lessonId": 4, "title": "Âm D - Đ", "sounds": ["D d", "Đ đ"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Bé vào lớp Một" }
+      ]
+    },
+    {
+      "topicId": 2,
+      "name": "Gia đình",
+      "lessons": [
+        { "lessonId": 1, "title": "Âm E - Ê", "sounds": ["E e", "Ê ê"] },
+        { "lessonId": 2, "title": "Âm G - H", "sounds": ["G g", "H h"] },
+        { "lessonId": 3, "title": "Âm I - K", "sounds": ["I i", "K k"] },
+        { "lessonId": 4, "title": "Âm L - M", "sounds": ["L l", "M m"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Bé và bà" }
+      ]
+    },
+    {
+      "topicId": 3,
+      "name": "Thiên nhiên",
+      "lessons": [
+        { "lessonId": 1, "title": "Âm N - Ơ", "sounds": ["N n", "Ơ ơ"] },
+        { "lessonId": 2, "title": "Âm P - Q", "sounds": ["P p", "Q q"] },
+        { "lessonId": 3, "title": "Âm R - S", "sounds": ["R r", "S s"] },
+        { "lessonId": 4, "title": "Âm T - U", "sounds": ["T t", "U u"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Cò và cá" }
+      ]
+    },
+    {
+      "topicId": 4,
+      "name": "Con vật",
+      "lessons": [
+        { "lessonId": 1, "title": "Âm Ư - V", "sounds": ["Ư ư", "V v"] },
+        { "lessonId": 2, "title": "Âm X - Y", "sounds": ["X x", "Y y"] },
+        { "lessonId": 3, "title": "Âm CH - TR", "sounds": ["Ch ch", "Tr tr"] },
+        { "lessonId": 4, "title": "Âm GI - NH", "sounds": ["Gi gi", "Nh nh"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Gà con và vịt con" }
+      ]
+    },
+    {
+      "topicId": 5,
+      "name": "Đồ vật",
+      "lessons": [
+        { "lessonId": 1, "title": "Âm NG - NGH", "sounds": ["Ng ng", "Ngh ngh"] },
+        { "lessonId": 2, "title": "Âm PH - TH", "sounds": ["Ph ph", "Th th"] },
+        { "lessonId": 3, "title": "Âm KH - GH", "sounds": ["Kh kh", "Gh gh"] },
+        { "lessonId": 4, "title": "Âm QU - Ă", "sounds": ["Qu qu", "Ă ă"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Bạn nhỏ và chiếc bút" }
+      ]
+    },
+    {
+      "topicId": 6,
+      "name": "Nghề nghiệp",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần IA - UA - ƯA", "sounds": ["ia", "ua", "ưa"] },
+        { "lessonId": 2, "title": "Vần OI - ÔI - ƠI", "sounds": ["oi", "ôi", "ơi"] },
+        { "lessonId": 3, "title": "Vần AI - AY - ÂY", "sounds": ["ai", "ay", "ây"] },
+        { "lessonId": 4, "title": "Vần EO - AO - AU", "sounds": ["eo", "ao", "au"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Bác sĩ và cô giáo" }
+      ]
+    },
+    {
+      "topicId": 7,
+      "name": "Đồ ăn",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần ÂU - IU - ƯU", "sounds": ["âu", "iu", "ưu"] },
+        { "lessonId": 2, "title": "Vần ƯƠI - ƯƠU - UÔI", "sounds": ["ươi", "ươu", "uôi"] },
+        { "lessonId": 3, "title": "Vần AN - ÂN - ƠN", "sounds": ["an", "ân", "ơn"] },
+        { "lessonId": 4, "title": "Vần ON - ÔN - UN", "sounds": ["on", "ôn", "un"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Bữa cơm gia đình" }
+      ]
+    },
+    {
+      "topicId": 8,
+      "name": "Giao thông",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần EN - ÊN - IN", "sounds": ["en", "ên", "in"] },
+        { "lessonId": 2, "title": "Vần IÊN - YÊN - UÔN", "sounds": ["iên", "yên", "uôn"] },
+        { "lessonId": 3, "title": "Vần ƯƠN - OAN - OĂN", "sounds": ["ươn", "oan", "oăn"] },
+        { "lessonId": 4, "title": "Vần AM - ĂM - ÂM", "sounds": ["am", "ăm", "âm"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Đi xe buýt" }
+      ]
+    },
+    {
+      "topicId": 9,
+      "name": "Thời tiết",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần EM - ÊM - IM", "sounds": ["em", "êm", "im"] },
+        { "lessonId": 2, "title": "Vần OM - ÔM - ƠM", "sounds": ["om", "ôm", "ơm"] },
+        { "lessonId": 3, "title": "Vần UM - IÊM - YÊM", "sounds": ["um", "iêm", "yêm"] },
+        { "lessonId": 4, "title": "Vần UÔM - ƯƠM - OAM", "sounds": ["uôm", "ươm", "oam"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Ngày mưa" }
+      ]
+    },
+    {
+      "topicId": 10,
+      "name": "Cây cối",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần AP - ĂP - ÂP", "sounds": ["ap", "ăp", "âp"] },
+        { "lessonId": 2, "title": "Vần OP - ÔP - ƠP", "sounds": ["op", "ôp", "ơp"] },
+        { "lessonId": 3, "title": "Vần EP - ÊP - IP", "sounds": ["ep", "êp", "ip"] },
+        { "lessonId": 4, "title": "Vần UP - IÊP - ƯƠP", "sounds": ["up", "iêp", "ươp"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Cây xanh trong vườn" }
+      ]
+    },
+    {
+      "topicId": 11,
+      "name": "Ngày lễ",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần AT - ĂT - ÂT", "sounds": ["at", "ăt", "ât"] },
+        { "lessonId": 2, "title": "Vần OT - ÔT - ƠT", "sounds": ["ot", "ôt", "ơt"] },
+        { "lessonId": 3, "title": "Vần ET - ÊT - IT", "sounds": ["et", "êt", "it"] },
+        { "lessonId": 4, "title": "Vần UT - ƯT - UÔT", "sounds": ["ut", "ưt", "uôt"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Tết Nguyên Đán" }
+      ]
+    },
+    {
+      "topicId": 12,
+      "name": "Vui chơi",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần IÊT - ƯƠT - OAT", "sounds": ["iêt", "ươt", "oat"] },
+        { "lessonId": 2, "title": "Vần OĂT - AC - ĂC", "sounds": ["oăt", "ac", "ăc"] },
+        { "lessonId": 3, "title": "Vần ÂC - OC - ÔC", "sounds": ["âc", "oc", "ôc"] },
+        { "lessonId": 4, "title": "Vần ƯC - UC - IC", "sounds": ["ưc", "uc", "ic"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Chơi đùa cùng bạn" }
+      ]
+    },
+    {
+      "topicId": 13,
+      "name": "Sức khỏe",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần ÊC - IÊC - UÔC", "sounds": ["êc", "iêc", "uôc"] },
+        { "lessonId": 2, "title": "Vần ƯƠC - OAC - ANG", "sounds": ["ươc", "oac", "ang"] },
+        { "lessonId": 3, "title": "Vần ĂNG - ÂNG - ONG", "sounds": ["ăng", "âng", "ong"] },
+        { "lessonId": 4, "title": "Vần ÔNG - UNG - ƯNG", "sounds": ["ông", "ung", "ưng"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Vệ sinh sạch sẽ" }
+      ]
+    },
+    {
+      "topicId": 14,
+      "name": "Quê hương",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần ENG - IÊNG - ANH", "sounds": ["eng", "iêng", "anh"] },
+        { "lessonId": 2, "title": "Vần ÊNH - INH - OONG", "sounds": ["ênh", "inh", "oong"] },
+        { "lessonId": 3, "title": "Vần OANG - OANH - UÂNG", "sounds": ["oang", "oanh", "uâng"] },
+        { "lessonId": 4, "title": "Vần ƯƠNG - ACH - ÊCH", "sounds": ["ương", "ach", "êch"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Làng quê em" }
+      ]
+    },
+    {
+      "topicId": 15,
+      "name": "Bạn bè",
+      "lessons": [
+        { "lessonId": 1, "title": "Vần ICH - OACH - IAU", "sounds": ["ich", "oach", "iau"] },
+        { "lessonId": 2, "title": "Vần YÊU - UAY - UÂY", "sounds": ["yêu", "uay", "uây"] },
+        { "lessonId": 3, "title": "Thanh hỏi - ngã", "sounds": ["? (hỏi)", "~ (ngã)"] },
+        { "lessonId": 4, "title": "Thanh sắc - nặng", "sounds": ["´ (sắc)", ". (nặng)"] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Tình bạn đẹp" }
+      ]
+    },
+    {
+      "topicId": 16,
+      "name": "Mùa xuân",
+      "lessons": [
+        { "lessonId": 1, "title": "Thanh huyền - không", "sounds": ["` (huyền)", "(không dấu)"] },
+        { "lessonId": 2, "title": "Ôn tập 6 thanh", "sounds": [] },
+        { "lessonId": 3, "title": "Luyện đọc văn bản", "sounds": [] },
+        { "lessonId": 4, "title": "Luyện viết câu", "sounds": [] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Hoa đào mùa xuân" }
+      ]
+    },
+    {
+      "topicId": 17,
+      "name": "Biển đảo",
+      "lessons": [
+        { "lessonId": 1, "title": "Luyện đọc - hiểu 1", "sounds": [] },
+        { "lessonId": 2, "title": "Luyện đọc - hiểu 2", "sounds": [] },
+        { "lessonId": 3, "title": "Luyện viết đoạn văn 1", "sounds": [] },
+        { "lessonId": 4, "title": "Luyện viết đoạn văn 2", "sounds": [] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Biển quê em" }
+      ]
+    },
+    {
+      "topicId": 18,
+      "name": "Ước mơ",
+      "lessons": [
+        { "lessonId": 1, "title": "Đọc văn bản dài 1", "sounds": [] },
+        { "lessonId": 2, "title": "Đọc văn bản dài 2", "sounds": [] },
+        { "lessonId": 3, "title": "Viết sáng tạo 1", "sounds": [] },
+        { "lessonId": 4, "title": "Viết sáng tạo 2", "sounds": [] },
+        { "lessonId": 5, "title": "Ôn tập & Kể chuyện", "story": "Em có ước mơ" }
+      ]
+    }
+  ],
+  "sampleLesson": {
+    "lessonId": "topic1-lesson1-a",
+    "title": "Bài 1: Âm A",
+    "objectives": [
+      "Nhận diện chữ cái A, a",
+      "Phát âm đúng âm 'a'",
+      "Đọc và viết chữ A, a",
+      "Nhận biết các từ có âm 'a'"
+    ],
+    "targetSound": {
+      "letter": "a",
+      "displayName": "A a",
+      "pronunciation": "/a/",
+      "description": "Âm 'a' là nguyên âm đầu tiên trong bảng chữ cái tiếng Việt. Miệng mở rộng, lưỡi đặt thấp khi phát âm."
+    },
+    "vocabulary": [
+      { "word": "ba", "meaning": "bố, cha", "syllables": ["b", "a"] },
+      { "word": "ca", "meaning": "cái cốc/hát", "syllables": ["c", "a"] },
+      { "word": "lá", "meaning": "lá cây", "syllables": ["l", "á"] },
+      { "word": "hoa", "meaning": "bông hoa", "syllables": ["h", "o", "a"] },
+      { "word": "cá", "meaning": "con cá", "syllables": ["c", "á"] },
+      { "word": "nhà", "meaning": "ngôi nhà", "syllables": ["nh", "à"] },
+      { "word": "quả", "meaning": "trái cây", "syllables": ["qu", "ả"] },
+      { "word": "bà", "meaning": "bà nội/ngoại", "syllables": ["b", "à"] }
+    ],
+    "games": {
+      "game1_imageSelect": [
+        {
+          "question": "Chọn hình có âm 'a'",
+          "options": ["🌸 hoa", "🌙 mặt trăng", "☀️ mặt trời", "🍎 táo"],
+          "correctAnswer": ["🌸 hoa", "🍎 táo"]
+        },
+        {
+          "question": "Chọn hình có âm 'a'",
+          "options": ["🐟 cá", "🐦 chim", "🏠 nhà", "🌲 cây"],
+          "correctAnswer": ["🐟 cá", "🏠 nhà"]
+        }
+      ],
+      "game2_blend": [
+        {
+          "question": "Ghép âm 'b' + 'a' thành từ gì?",
+          "options": ["ba", "ca", "la", "ma"],
+          "correctAnswer": "ba"
+        },
+        {
+          "question": "Ghép âm 'c' + 'a' thành từ gì?",
+          "options": ["ca", "ba", "da", "ga"],
+          "correctAnswer": "ca"
+        }
+      ]
+    },
+    "sentences": [
+      { "text": "Bà có bơ.", "highlight": ["Bà", "bơ"] },
+      { "text": "Ba đi xa.", "highlight": ["Ba", "xa"] },
+      { "text": "Cá ở hồ.", "highlight": ["Cá"] }
+    ],
+    "writingPractice": {
+      "letter": "A a",
+      "strokeOrder": [
+        "Bắt đầu từ dưới bên trái, vẽ nét xiên lên đỉnh",
+        "Từ đỉnh, vẽ nét xiên xuống bên phải",
+        "Vẽ nét ngang ở giữa, nối hai nét xiên"
+      ]
+    }
+  },
+  "sampleReview": {
+    "lessonId": "topic2-lesson5-review",
+    "title": "Ôn tập & Kể chuyện: Bé và bà",
+    "soundsLearned": ["e", "ê", "g", "h", "i", "k", "l", "m"],
+    "combinationTable": [
+      { "consonant": "b", "combinations": ["ba", "be", "bê", "bi", "bo", "bô"] },
+      { "consonant": "c", "combinations": ["ca", "ce", "cô", "co"] },
+      { "consonant": "d", "combinations": ["da", "de", "dê", "di", "do"] },
+      { "consonant": "đ", "combinations": ["đa", "đe", "đê", "đi", "đo", "đô"] },
+      { "consonant": "g", "combinations": ["ga", "ge", "gô", "go"] },
+      { "consonant": "h", "combinations": ["ha", "he", "hê", "hi", "ho", "hô"] },
+      { "consonant": "k", "combinations": ["ke", "kê", "ki"] },
+      { "consonant": "l", "combinations": ["la", "le", "lê", "li", "lo", "lô"] },
+      { "consonant": "m", "combinations": ["ma", "me", "mê", "mi", "mo", "mô"] }
+    ],
+    "story": {
+      "title": "Bé và bà",
+      "content": [
+        "Bé ở nhà với bà.",
+        "Bà cho bé ăn cơm.",
+        "Bé giúp bà quét nhà.",
+        "Bà kể chuyện cho bé nghe.",
+        "Bé rất yêu bà."
+      ]
+    },
+    "comprehensionQuestions": [
+      {
+        "question": "Bé ở nhà với ai?",
+        "options": ["Với mẹ", "Với bà", "Với ba", "Một mình"],
+        "correctAnswer": "Với bà",
+        "explanation": "Câu đầu tiên: 'Bé ở nhà với bà.'"
+      },
+      {
+        "question": "Bà cho bé làm gì?",
+        "options": ["Đi chơi", "Xem tivi", "Ăn cơm", "Đi ngủ"],
+        "correctAnswer": "Ăn cơm",
+        "explanation": "Câu thứ hai: 'Bà cho bé ăn cơm.'"
+      },
+      {
+        "question": "Bé giúp bà làm gì?",
+        "options": ["Nấu cơm", "Quét nhà", "Giặt đồ", "Tưới cây"],
+        "correctAnswer": "Quét nhà",
+        "explanation": "Câu thứ ba: 'Bé giúp bà quét nhà.'"
+      }
+    ]
+  }
+}
