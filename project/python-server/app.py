@@ -1,5 +1,10 @@
-from app import create_app
+import os
+from dotenv import load_dotenv
 
+# Load .env file FIRST before any other imports
+load_dotenv()
+
+from app import create_app
 
 app = create_app()
 

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onRetry?: () => void;
   score: number;
   total: number;
   results: Array<{
@@ -10,10 +11,11 @@ type Props = {
     userAnswer: string;
     correctAnswer: string;
     isCorrect: boolean;
+    explanation?: string;
   }>;
 };
 
-function ResultPopup({ isOpen, onClose, score, total, results }: Props) {
+function ResultPopup({ isOpen, onClose, onRetry, score, total, results }: Props) {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("popup-open");
@@ -54,7 +56,7 @@ function ResultPopup({ isOpen, onClose, score, total, results }: Props) {
       >
         <div>
           <h2 style={{ marginTop: 0 }}>
-            You scored {score}/{total} points ({percentage}%)
+            🎯 Kết quả: {score}/{total} điểm ({percentage}%)
           </h2>
 
           <div
@@ -86,10 +88,10 @@ function ResultPopup({ isOpen, onClose, score, total, results }: Props) {
               }}
             >
               {percentage >= 80
-                ? "🌼 Excellent! You mastered the material!"
+                ? "🌟 Xuất sắc! Bạn đã nắm vững kiến thức!"
                 : percentage >= 50
-                ? "🌱 Good job! Keep going!"
-                : "🌺 Don’t give up, review and try again!"}
+                ? "👍 Tốt lắm! Tiếp tục cố gắng nhé!"
+                : "💪 Đừng nản, hãy ôn tập và thử lại!"}
             </p>
           </div>
 
@@ -101,7 +103,7 @@ function ResultPopup({ isOpen, onClose, score, total, results }: Props) {
                 color: "var(--text-700)",
               }}
             >
-              Answer Details:
+              Chi tiết câu trả lời:
             </h3>
             <div style={{ display: "grid", gap: "12px" }}>
               {results.map((result, index) => (
@@ -127,24 +129,29 @@ function ResultPopup({ isOpen, onClose, score, total, results }: Props) {
                       color: "var(--text-700)",
                     }}
                   >
-                    Question {index + 1}: {result.question}
+                    Câu {index + 1}: {result.question}
                   </p>
                   <div
                     style={{ display: "grid", gap: "4px", fontSize: "0.9rem" }}
                   >
                     <p style={{ margin: 0, color: "var(--text-500)" }}>
-                      <strong>Your answer:</strong>{" "}
+                      <strong>Câu trả lời của bạn:</strong>{" "}
                       <span
                         style={{
                           color: result.isCorrect ? "var(--fern-700)" : "#c33",
                         }}
                       >
-                        {result.userAnswer || "(No answer)"}
+                        {result.userAnswer || "(Chưa trả lời)"}
                       </span>
                     </p>
-                    {!result.isCorrect && (
+                    {!result.isCorrect && result.correctAnswer !== "(Không có đáp án cố định)" && (
                       <p style={{ margin: 0, color: "var(--fern-700)" }}>
-                        <strong>Correct answer:</strong> {result.correctAnswer}
+                        <strong>Đáp án đúng:</strong> {result.correctAnswer}
+                      </p>
+                    )}
+                    {result.explanation && (
+                      <p style={{ margin: "4px 0 0", color: "var(--text-600)", fontStyle: "italic" }}>
+                        <strong>Giải thích:</strong> {result.explanation}
                       </p>
                     )}
                     <p
@@ -154,7 +161,7 @@ function ResultPopup({ isOpen, onClose, score, total, results }: Props) {
                         color: result.isCorrect ? "var(--fern-700)" : "#c33",
                       }}
                     >
-                      {result.isCorrect ? "✓ Correct" : "✗ Incorrect"}
+                      {result.isCorrect ? "✓ Đúng" : "✗ Sai"}
                     </p>
                   </div>
                 </div>
@@ -170,8 +177,13 @@ function ResultPopup({ isOpen, onClose, score, total, results }: Props) {
               justifyContent: "flex-end",
             }}
           >
-            <button className="cta solid" onClick={onClose}>
-              Close
+            {onRetry && (
+              <button className="cta solid" onClick={onRetry}>
+                Làm bài mới
+              </button>
+            )}
+            <button className="cta ghost" onClick={onClose}>
+              Đóng
             </button>
           </div>
         </div>

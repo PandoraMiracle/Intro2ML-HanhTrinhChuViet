@@ -173,6 +173,11 @@ const DrawingBoard = ({
         url?: string;
         message?: string;
         success?: boolean;
+        error?: string;
+        // Direct OCR response format
+        ocr_text?: string;
+        model_used?: string;
+        // Nested data format
         data?: {
           message?: string;
           model_used?: string;
@@ -183,13 +188,14 @@ const DrawingBoard = ({
       };
       console.log("Response từ server:", data);
 
-      if (!resp.ok || !data.success) {
-        throw new Error(data.message || "Upload không thành công");
+      // Check for error
+      if (!resp.ok || data.error) {
+        throw new Error(data.error || data.message || "Upload không thành công");
       }
 
-      // Truyền URL (hoặc empty string) và kết quả OCR từ Flask
-      const ocrResult = data.data?.ocr_text || "";
-      if (onUploaded) onUploaded(ocrResult || "uploaded", data.data);
+      // Get OCR result - support both direct and nested format
+      const ocrResult = data.ocr_text || data.data?.ocr_text || "";
+      if (onUploaded) onUploaded(ocrResult || "uploaded", data);
       // setUploadMsg(ocrResult ? `OCR: ${ocrResult}` : 'Đã upload thành công')
     } catch (err) {
       console.error("Lỗi upload:", err);
