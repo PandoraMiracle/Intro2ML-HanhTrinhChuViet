@@ -6,6 +6,7 @@ import "./ReviewPage.css";
 type Props = {
   review: ReviewLesson;
   onComplete?: (score: number) => void;
+  onBackToMap?: () => void;
 };
 
 type ReviewStep =
@@ -17,7 +18,7 @@ type ReviewStep =
   | "writing"
   | "complete";
 
-const ReviewPage = ({ review, onComplete }: Props) => {
+const ReviewPage = ({ review, onComplete, onBackToMap }: Props) => {
   const [currentStep, setCurrentStep] = useState<ReviewStep>("intro");
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -436,9 +437,17 @@ const ReviewPage = ({ review, onComplete }: Props) => {
           Write the sentence above in the box below:
         </p>
         <DrawingBoard
-          uploadUrl="/api/recognize"
+          uploadUrl="/api/pic/upload"
+          expectedAnswer={review.story.content[0]}
           onUploaded={(url, result) => {
             console.log("Drawing uploaded:", url, result);
+          }}
+          onMatchResult={(isMatched, userAnswer, expectedAnswer) => {
+            console.log("Match result:", { isMatched, userAnswer, expectedAnswer });
+            // Update score based on match result
+            if (isMatched) {
+              setScore((prev) => prev + 30); // Bonus points for correct sentence writing
+            }
           }}
           strokeWidth={4}
         />
@@ -492,7 +501,19 @@ const ReviewPage = ({ review, onComplete }: Props) => {
         <button className="cta ghost" onClick={() => window.location.reload()}>
           Review Again
         </button>
-        <button className="cta solid">Complete Review →</button>
+        <button 
+          className="cta solid" 
+          onClick={() => {
+            if (onComplete) {
+              onComplete(score);
+            }
+            if (onBackToMap) {
+              onBackToMap();
+            }
+          }}
+        >
+          Complete Review →
+        </button>
       </div>
     </div>
   );

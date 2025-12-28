@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { LessonContent, GameQuestion } from "../data/lessonContent";
 import DrawingBoard from "./DrawingBoard";
 import "./LessonPage.css";
@@ -28,6 +28,7 @@ const LessonPage = ({ lesson, onComplete, onNextLesson, onBack }: Props) => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [vocabIndex, setVocabIndex] = useState(0);
+  const [hasCompleted, setHasCompleted] = useState(false);
 
   const steps: LessonStep[] = [
     "intro",
@@ -41,6 +42,19 @@ const LessonPage = ({ lesson, onComplete, onNextLesson, onBack }: Props) => {
   ];
   const currentStepIndex = steps.indexOf(currentStep);
   const progress = ((currentStepIndex + 1) / steps.length) * 100;
+
+  // Reset hasCompleted when lesson changes
+  useEffect(() => {
+    setHasCompleted(false);
+  }, [lesson]);
+
+  // Ensure progress is saved when reaching complete step
+  useEffect(() => {
+    if (currentStep === "complete" && onComplete && !hasCompleted) {
+      onComplete(score);
+      setHasCompleted(true);
+    }
+  }, [currentStep, score, onComplete, hasCompleted]);
 
   const getCurrentGame = (): GameQuestion[] => {
     switch (currentStep) {
@@ -114,10 +128,13 @@ const LessonPage = ({ lesson, onComplete, onNextLesson, onBack }: Props) => {
     if (nextStepIndex < steps.length) {
       setCurrentStep(steps[nextStepIndex]);
     }
-    if (steps[nextStepIndex] === "complete" && onComplete) {
+    // Call onComplete when reaching complete step
+    if (steps[nextStepIndex] === "complete" && onComplete && !hasCompleted) {
       onComplete(score);
+      setHasCompleted(true);
     }
   };
+
 
   const renderIntro = () => {
     if (!lesson || !lesson.targetSound) {
@@ -271,8 +288,8 @@ const LessonPage = ({ lesson, onComplete, onNextLesson, onBack }: Props) => {
       currentStep === "game1"
         ? "🎮 Game 1: Select Images with Correct Sound"
         : currentStep === "game2"
-        ? "🎮 Game 2: Blend Sounds into Words"
-        : "🎮 Game 3: Fill in the Missing Letter";
+          ? "🎮 Game 2: Blend Sounds into Words"
+          : "🎮 Game 3: Fill in the Missing Letter";
 
     return (
       <div className="game-section">
@@ -288,21 +305,19 @@ const LessonPage = ({ lesson, onComplete, onNextLesson, onBack }: Props) => {
             {currentGame.options?.map((option, idx) => (
               <button
                 key={idx}
-                className={`option-btn ${
-                  selectedAnswers.includes(option) ? "selected" : ""
-                } ${
-                  showFeedback
+                className={`option-btn ${selectedAnswers.includes(option) ? "selected" : ""
+                  } ${showFeedback
                     ? (
-                        Array.isArray(currentGame.correctAnswer)
-                          ? currentGame.correctAnswer.includes(option)
-                          : currentGame.correctAnswer === option
-                      )
+                      Array.isArray(currentGame.correctAnswer)
+                        ? currentGame.correctAnswer.includes(option)
+                        : currentGame.correctAnswer === option
+                    )
                       ? "correct"
                       : selectedAnswers.includes(option)
-                      ? "incorrect"
-                      : ""
+                        ? "incorrect"
+                        : ""
                     : ""
-                }`}
+                  }`}
                 onClick={() => !showFeedback && handleSelectAnswer(option)}
                 disabled={showFeedback}
               >
@@ -459,9 +474,17 @@ const LessonPage = ({ lesson, onComplete, onNextLesson, onBack }: Props) => {
               {`Write the letter "${lesson.writingPractice.letter}" in the box below:`}
             </p>
             <DrawingBoard
-              uploadUrl="/api/recognize"
+              uploadUrl="/api/pic/upload"
+              expectedAnswer={lesson.writingPractice.letter}
               onUploaded={(url, result) => {
                 console.log("Drawing uploaded:", url, result);
+              }}
+              onMatchResult={(isMatched, userAnswer, expectedAnswer) => {
+                console.log("Match result:", { isMatched, userAnswer, expectedAnswer });
+                // Update score based on match result
+                if (isMatched && !hasCompleted) {
+                  setScore((prev) => prev + 20); // Bonus points for correct writing
+                }
               }}
               strokeWidth={5}
             />
@@ -511,8 +534,18 @@ const LessonPage = ({ lesson, onComplete, onNextLesson, onBack }: Props) => {
         <button className="cta ghost" onClick={() => window.location.reload()}>
           Practice Again
         </button>
-        <button className="cta solid" onClick={onNextLesson}>
-          Next Lesson →
+        <button className="cta solid" onClick={() => {
+          // Ensure onComplete is called if not already called
+          if (onComplete && !hasCompleted) {
+            onComplete(score);
+            setHasCompleted(true);
+          }
+          // Go back to roadmap
+          if (onBack) {
+            onBack();
+          }
+        }}>
+          Back to Roadmap →
         </button>
       </div>
     </div>

@@ -6,16 +6,28 @@ import "./CurriculumMap.css";
 type Props = {
   onSelectLesson?: (topicId: number, lessonId: number) => void;
   completedLessons?: string[]; // format: "topicId-lessonId"
+  unlockedTopics?: number[]; // Array of unlocked topic IDs
 };
 
-const CurriculumMap = ({ onSelectLesson, completedLessons = [] }: Props) => {
+const CurriculumMap = ({ 
+  onSelectLesson, 
+  completedLessons = [],
+  unlockedTopics = [1]
+}: Props) => {
   const [expandedTopic, setExpandedTopic] = useState<number | null>(1);
 
   const isLessonCompleted = (topicId: number, lessonId: number) => {
     return completedLessons.includes(`${topicId}-${lessonId}`);
   };
 
+  const isTopicUnlocked = (topicId: number) => {
+    return unlockedTopics.includes(topicId);
+  };
+
   const isLessonUnlocked = (topicId: number, lessonId: number) => {
+    // Topic must be unlocked first
+    if (!isTopicUnlocked(topicId)) return false;
+
     // First lesson of first topic is always unlocked
     if (topicId === 1 && lessonId === 1) return true;
 

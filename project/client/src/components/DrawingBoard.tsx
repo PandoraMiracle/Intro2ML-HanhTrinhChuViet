@@ -6,6 +6,8 @@ type Props = {
   uploadUrl?: string;
   strokeColor?: string;
   strokeWidth?: number;
+  expectedAnswer?: string; // Expected answer to compare with OCR result
+  onMatchResult?: (isMatched: boolean, userAnswer: string, expectedAnswer: string) => void;
 };
 
 const DrawingBoard = ({
@@ -14,11 +16,18 @@ const DrawingBoard = ({
   uploadUrl = "/api/pic/upload",
   strokeColor = "#000000",
   strokeWidth = 3,
+  expectedAnswer,
+  onMatchResult,
 }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawingRef = useRef(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadMsg, setUploadMsg] = useState<string | null>(null);
+  const [matchResult, setMatchResult] = useState<{
+    isMatched: boolean;
+    userAnswer: string;
+    expectedAnswer: string;
+  } | null>(null);
 
   // Fit canvas to parent size
   useEffect(() => {
@@ -196,7 +205,76 @@ const DrawingBoard = ({
       // Get OCR result - support both direct and nested format
       const ocrResult = data.ocr_text || data.data?.ocr_text || "";
       if (onUploaded) onUploaded(ocrResult || "uploaded", data);
-      // setUploadMsg(ocrResult ? `OCR: ${ocrResult}` : 'Đã upload thành công')
+
+      // Compare with expected answer if provided
+      if (expectedAnswer) {
+        const normalizedUserAnswer = ocrResult.trim().toLowerCase();
+        const normalizedExpected = expectedAnswer.trim().toLowerCase();
+
+        // First, try exact match (case-insensitive)
+        let isMatched = normalizedUserAnswer === normalizedExpected;
+
+        // If not exact match, check for partial matches (for cases like "A a" vs "A" or "a")
+        if (!isMatched) {
+          // Split expected by spaces to get individual parts (e.g., "A a" -> ["a", "a"])
+          const expectedParts = normalizedExpected.split(/\s+/).filter(p => p.length > 0);
+
+          // Check if user answer matches any of the expected parts exactly
+          // This handles "A a" where user might write just "A" or "a"
+          const matchesAnyPart = expectedParts.some(part => {
+            // Exact match with a part
+            if (normalizedUserAnswer === part) return true;
+
+            // Check if user answer contains the part as a complete word (not substring)
+            // Use word boundary to avoid "TATE" matching "A"
+            const wordBoundaryRegex = new RegExp(`\\b${part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+            return wordBoundaryRegex.test(ocrResult);
+          });
+
+          // Also check if user answer is a substring of expected (for "A" matching "A a")
+          const isSubstring = normalizedExpected.includes(normalizedUserAnswer) &&
+            normalizedUserAnswer.length > 0 &&
+            normalizedUserAnswer.length <= normalizedExpected.length;
+
+          // Match if user answer matches any part OR is a substring of expected
+          isMatched = matchesAnyPart || isSubstring;
+
+          // Additional strict check: if expected is very short (1-2 chars), require exact or very close
+          if (normalizedExpected.length <= 2 && !isMatched) {
+            // For single/double character expected, only match if user answer is the same length or shorter
+            // and contains the expected character(s)
+            const expectedUniqueChars = [...new Set(normalizedExpected.replace(/\s+/g, '').split(''))];
+            const userUniqueChars = [...new Set(normalizedUserAnswer.replace(/\s+/g, '').split(''))];
+
+            // Match only if all expected characters are present in user answer
+            // AND user answer is not significantly longer (avoid "TATE" matching "A")
+            const allCharsPresent = expectedUniqueChars.every(char => userUniqueChars.includes(char));
+            const notTooLong = normalizedUserAnswer.length <= normalizedExpected.length + 1;
+
+            isMatched = allCharsPresent && notTooLong;
+          }
+        }
+
+        const result = {
+          isMatched,
+          userAnswer: ocrResult || "No text detected",
+          expectedAnswer: expectedAnswer,
+        };
+
+        setMatchResult(result);
+
+        if (onMatchResult) {
+          onMatchResult(isMatched, ocrResult || "", expectedAnswer);
+        }
+
+        if (isMatched) {
+          setUploadMsg("✅ Correct!");
+        } else {
+          setUploadMsg(`❌ Not matched. Expected: "${expectedAnswer}"`);
+        }
+      } else {
+        setUploadMsg(ocrResult ? `OCR: ${ocrResult}` : 'Đã upload thành công');
+      }
     } catch (err) {
       console.error("Lỗi upload:", err);
       setUploadMsg((err as Error).message || "Lỗi upload");
@@ -210,6 +288,8 @@ const DrawingBoard = ({
     const canvas = canvasRef.current;
     if (!ctx || !canvas) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setMatchResult(null);
+    setUploadMsg(null);
   };
 
   return (
@@ -249,28 +329,70 @@ const DrawingBoard = ({
           right: 10,
           display: "flex",
           gap: 8,
-          alignItems: "center",
+          alignItems: "flex-end",
+          flexDirection: "column",
         }}
       >
-        <button
-          onClick={handleClear}
-          className="cta ghost"
-          style={{ padding: "8px 14px" }}
-          type="button"
-        >
-          Xóa
-        </button>
-        <button
-          onClick={handleSave}
-          className="cta solid"
-          style={{ padding: "8px 14px" }}
-          type="button"
-          disabled={isUploading}
-        >
-          {isUploading ? "Đang lưu..." : "Lưu"}
-        </button>
-        {uploadMsg && (
-          <span style={{ fontSize: "0.9rem", color: "#1f3c32" }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <button
+            onClick={handleClear}
+            className="cta ghost"
+            style={{ padding: "8px 14px" }}
+            type="button"
+          >
+            Clear
+          </button>
+          <button
+            onClick={handleSave}
+            className="cta solid"
+            style={{ padding: "8px 14px" }}
+            type="button"
+            disabled={isUploading}
+          >
+            {isUploading ? "Checking..." : "Check Answer"}
+          </button>
+        </div>
+        {matchResult && (
+          <div style={{
+            padding: "12px 16px",
+            borderRadius: "8px",
+            background: matchResult.isMatched ? "#dcfce7" : "#fee2e2",
+            border: `2px solid ${matchResult.isMatched ? "#16a34a" : "#dc2626"}`,
+            fontSize: "0.9rem",
+            minWidth: "250px",
+            textAlign: "left",
+            marginTop: "8px"
+          }}>
+            <div style={{
+              fontWeight: "700",
+              marginBottom: "8px",
+              fontSize: "1rem",
+              color: matchResult.isMatched ? "#16a34a" : "#dc2626"
+            }}>
+              {matchResult.isMatched ? "✅ Correct!" : "❌ Not Matched"}
+            </div>
+            <div style={{ color: "#1f3c32", lineHeight: "1.6" }}>
+              <div style={{ marginBottom: "4px" }}>
+                <strong>Your answer:</strong> {matchResult.userAnswer || "No text detected"}
+              </div>
+              <div>
+                <strong>Expected:</strong> {matchResult.expectedAnswer}
+              </div>
+            </div>
+          </div>
+        )}
+        {uploadMsg && !matchResult && (
+          <span
+            style={{
+              fontSize: "0.9rem",
+              color: "#1f3c32",
+              fontWeight: "500",
+              padding: "4px 12px",
+              borderRadius: "6px",
+              background: "#f3f4f6",
+              marginTop: "8px"
+            }}
+          >
             {uploadMsg}
           </span>
         )}

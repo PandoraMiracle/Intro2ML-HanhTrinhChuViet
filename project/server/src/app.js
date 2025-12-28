@@ -17,6 +17,7 @@ app.use(express.json());
 
 connectDB();
 
-app.use('/', indexRoute);
+// All routes are under /api prefix
+app.use('/api', indexRoute);
 
 export default app;

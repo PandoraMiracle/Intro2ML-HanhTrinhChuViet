@@ -19,7 +19,10 @@ import time
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 # GEMINI_API_KEY = "AIzaSyDQMi4uRY0oYXjBzkcw6bCoK73qHmxC9rs"
-print(f"🔑 GEMINI_API_KEY set: {GEMINI_API_KEY}")
+try:
+    print(f"🔑 GEMINI_API_KEY set: {GEMINI_API_KEY}")
+except UnicodeEncodeError:
+    print(f"GEMINI_API_KEY set: {GEMINI_API_KEY}")
 _MODEL = "models/gemini-2.5-flash"
 _ENDPOINT = "https://generativelanguage.googleapis.com/v1beta"
 

@@ -8,6 +8,7 @@ import {
   lessonsContent,
 } from "../data/lessonContent";
 import { curriculum } from "../data/curriculum";
+import { userProgressApi, userExpApi } from "../utils/api";
 import "./LearningPage.css";
 
 type ViewMode = "map" | "lesson" | "review";
@@ -22,23 +23,67 @@ const LearningPage = () => {
   const [selectedLesson, setSelectedLesson] = useState<SelectedLesson | null>(
     null
   );
-  const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
-    const saved = localStorage.getItem("completedLessons");
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [totalXP, setTotalXP] = useState(() => {
-    const saved = localStorage.getItem("totalXP");
-    return saved ? Number(saved) : 0;
-  });
+  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+  const [unlockedTopics, setUnlockedTopics] = useState<number[]>([1]);
+  const [loading, setLoading] = useState(true);
 
-  // Clear localStorage on code change (dev mode)
+  // Load user progress from API
   useEffect(() => {
-    localStorage.removeItem("completedLessons");
-    localStorage.removeItem("totalXP");
-    setCompletedLessons([]);
-    setTotalXP(0);
-    window.dispatchEvent(new Event("xpUpdated"));
+    const loadUserProgress = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const progress = await userProgressApi.get();
+        
+        // Convert completedLessons to format: "topicId-lessonId"
+        const completed = progress.completedLessons
+          .filter((lesson: any) => lesson.completed)
+          .map((lesson: any) => `${lesson.topicId}-${lesson.lessonId}`);
+        
+        setCompletedLessons(completed);
+        setUnlockedTopics(progress.unlockedTopics || [1]);
+      } catch (err) {
+        console.error("Failed to load user progress:", err);
+        // Fallback to localStorage
+        const saved = localStorage.getItem("completedLessons");
+        if (saved) {
+          setCompletedLessons(JSON.parse(saved));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserProgress();
   }, []);
+
+  // Refresh progress when returning to map view
+  useEffect(() => {
+    if (viewMode === "map") {
+      const refreshProgress = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        try {
+          const progress = await userProgressApi.get();
+          const completed = progress.completedLessons
+            .filter((lesson: any) => lesson.completed)
+            .map((lesson: any) => `${lesson.topicId}-${lesson.lessonId}`);
+          
+          setCompletedLessons(completed);
+          setUnlockedTopics(progress.unlockedTopics || [1]);
+        } catch (err) {
+          console.error("Failed to refresh progress:", err);
+        }
+      };
+
+      refreshProgress();
+    }
+  }, [viewMode]);
 
   const handleSelectLesson = (topicId: number, lessonId: number) => {
     setSelectedLesson({ topicId, lessonId });
@@ -51,20 +96,58 @@ const LearningPage = () => {
     }
   };
 
-  const handleLessonComplete = (score: number) => {
-    if (selectedLesson) {
+  const handleLessonComplete = async (score: number) => {
+    if (!selectedLesson) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // Fallback to localStorage if not logged in
       const lessonKey = `${selectedLesson.topicId}-${selectedLesson.lessonId}`;
       if (!completedLessons.includes(lessonKey)) {
         const updated = [...completedLessons, lessonKey];
         setCompletedLessons(updated);
         localStorage.setItem("completedLessons", JSON.stringify(updated));
       }
-      setTotalXP((prev) => {
-        const newXP = prev + score;
-        localStorage.setItem("totalXP", String(newXP));
-        window.dispatchEvent(new Event("xpUpdated"));
-        return newXP;
-      });
+      return;
+    }
+
+    try {
+      // Save lesson progress to database
+      await userProgressApi.addLesson(
+        selectedLesson.topicId,
+        selectedLesson.lessonId,
+        score
+      );
+
+      // Add exp points (score = exp points)
+      await userExpApi.addExp(score);
+
+      // Update streak
+      await userExpApi.updateStreak();
+
+      // Reload progress to get updated data (including unlocked topics)
+      const progress = await userProgressApi.get();
+      const completed = progress.completedLessons
+        .filter((lesson: any) => lesson.completed)
+        .map((lesson: any) => `${lesson.topicId}-${lesson.lessonId}`);
+      
+      setCompletedLessons(completed);
+      setUnlockedTopics(progress.unlockedTopics || [1]);
+
+      // Trigger XP update event for header
+      window.dispatchEvent(new Event("xpUpdated"));
+
+      // Also update localStorage as fallback
+      localStorage.setItem("completedLessons", JSON.stringify(completed));
+    } catch (err) {
+      console.error("Failed to save lesson progress:", err);
+      // Fallback to localStorage
+      const lessonKey = `${selectedLesson.topicId}-${selectedLesson.lessonId}`;
+      if (!completedLessons.includes(lessonKey)) {
+        const updated = [...completedLessons, lessonKey];
+        setCompletedLessons(updated);
+        localStorage.setItem("completedLessons", JSON.stringify(updated));
+      }
     }
   };
 
@@ -133,6 +216,7 @@ const LearningPage = () => {
           <CurriculumMap
             onSelectLesson={handleSelectLesson}
             completedLessons={completedLessons}
+            unlockedTopics={unlockedTopics}
           />
         )}
 
@@ -161,6 +245,7 @@ const LearningPage = () => {
           <ReviewPage
             review={getCurrentReviewContent()}
             onComplete={handleLessonComplete}
+            onBackToMap={handleBackToMap}
           />
         )}
       </div>

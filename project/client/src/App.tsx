@@ -60,9 +60,25 @@ async function loginAction({ request }: { request: Request }) {
       return { error: result.message || "Đăng nhập thất bại" };
     }
 
-    // Store token and redirect
+    // Store token and user data
     localStorage.setItem("token", result.token);
-    window.location.href = "/game";
+    if (result.user) {
+      localStorage.setItem("user", JSON.stringify(result.user));
+    } else if (result.fullname || result.name) {
+      // Fallback: create user object from response
+      localStorage.setItem("user", JSON.stringify({
+        fullname: result.fullname || result.name,
+        email: data.email,
+      }));
+    } else {
+      // If no user data, create from email
+      const emailName = data.email.toString().split("@")[0];
+      localStorage.setItem("user", JSON.stringify({
+        fullname: emailName.charAt(0).toUpperCase() + emailName.slice(1),
+        email: data.email,
+      }));
+    }
+    window.location.href = "/";
     return { success: true };
   } catch (error) {
     return { error: "Lỗi kết nối đến server" };

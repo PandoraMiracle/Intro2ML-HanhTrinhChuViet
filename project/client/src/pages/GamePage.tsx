@@ -476,9 +476,14 @@ function GamePage() {
                 >
                   <DrawingBoard
                     uploadUrl={`${PYTHON_SERVER}/predict`}
+                    expectedAnswer={currentQuestion.answer} // Only for ca_dao type
                     onUploaded={(ocrText) =>
                       handleDrawingUploaded(currentQuestion.id, ocrText)
                     }
+                    onMatchResult={(isMatched, userAnswer, expectedAnswer) => {
+                      // Optional: Can show realtime feedback if needed
+                      console.log("Match result:", { isMatched, userAnswer, expectedAnswer });
+                    }}
                     strokeColor="var(--fern-700)"
                     strokeWidth={4}
                   />
