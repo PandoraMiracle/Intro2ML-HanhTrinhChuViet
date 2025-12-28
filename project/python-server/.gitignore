@@ -1,14 +1,19 @@
-venv/
-*pycache*/
-*.log
-*.bak
-*__pycache__*/
-*.pth
-.vscode/
-.env/
-.venv/
-*.py[cod]
-*$py.class
-*.pyc
+# Python bytecode
 __pycache__/
 *.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+.env/
+
+# Logs & backup files
+*.log
+*.bak
+
+# VS Code
+.vscode/
+
+# Misc
+*.pth
